@@ -5,3 +5,4 @@ Kyle Baird
 I'm monke
 Max resolved
 Zachary Lefin
+Jake Nichols

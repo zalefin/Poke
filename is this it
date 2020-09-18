@@ -1,0 +1,106 @@
+[33mcommit 0aad60026db25a48dca1bc04dd0cd45d49f925b4[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Merge: 5fc4337 613e707
+Author: jakenichols2719 <jnichols2719@protonmail.com>
+Date:   Thu Sep 17 18:02:01 2020 -0600
+
+    Merge branch 'master' of https://github.com/CSCI-3308-CU-Boulder/203_1_F20
+    Resolving conflict
+
+[33mcommit 5fc43372ba8a8468cac33972f0c6cd6424d128a4[m
+Author: jakenichols2719 <jnichols2719@protonmail.com>
+Date:   Thu Sep 17 17:57:49 2020 -0600
+
+    monke
+
+[33mcommit 613e70711939a4226d7928ec06db46f908a8ccc8[m
+Author: Zach Lefin <zachlefin@gmail.com>
+Date:   Tue Sep 15 20:10:26 2020 -0600
+
+    fix gitignore paths
+
+[33mcommit cc2ddcdc97eb465c9620e462c7b9e3534bab833c[m
+Author: Zach Lefin <zachlefin@gmail.com>
+Date:   Tue Sep 15 19:47:06 2020 -0600
+
+    update gitignore
+
+[33mcommit cd7386d2ebb81f84212bd0e405ed0ad37056f5e6[m
+Merge: 729871a 813b766
+Author: jakenichols2719 <54028990+jakenichols2719@users.noreply.github.com>
+Date:   Tue Sep 15 19:09:45 2020 -0600
+
+    Merge pull request #1 from CSCI-3308-CU-Boulder/TestBranch
+    
+    Testing merge of test branch to master
+
+[33mcommit 813b766c683c969fa55ebad0e4a3d92b35300451[m
+Author: jakenichols2719 <jnichols2719@protonmail.com>
+Date:   Tue Sep 15 19:08:23 2020 -0600
+
+    Test commit to branch
+
+[33mcommit 729871a7f5400d006e0aef241160a39f02d51d36[m
+Author: jakenichols2719 <jnichols2719@protonmail.com>
+Date:   Tue Sep 15 19:01:05 2020 -0600
+
+    Removing accidental subrepo
+
+[33mcommit 47d23c8dabf93e50cd7d55fbbc0567ef76332314[m
+Author: jakenichols2719 <jnichols2719@protonmail.com>
+Date:   Tue Sep 15 18:57:54 2020 -0600
+
+    App files initialized
+
+[33mcommit 233b9137891c42323005bc13d3802ec656b10a4c[m
+Author: Zach Lefin <zachlefin@gmail.com>
+Date:   Mon Sep 14 22:09:20 2020 -0600
+
+    init django files
+
+[33mcommit 0faa78d78c7fdc784e149b752999cdc2776ed135[m
+Author: graefmf <70293952+graefmf@users.noreply.github.com>
+Date:   Fri Sep 11 19:16:03 2020 -0600
+
+    Add files via upload
+
+[33mcommit fa9d82e7e6a4417432cf8c104cd3fbc825d0fc58[m
+Author: graefmf <70293952+graefmf@users.noreply.github.com>
+Date:   Fri Sep 11 19:15:49 2020 -0600
+
+    Create ProjectMilestone1_[203-1].pdf
+
+[33mcommit 9d4364d9665635a82e4b3f7d5a9dabe7cb94a470[m
+Author: graefmf <70293952+graefmf@users.noreply.github.com>
+Date:   Fri Sep 11 19:14:55 2020 -0600
+
+    Delete ProjectMilestone1_[203-1]
+
+[33mcommit a2e4db7bed1f7cd8a55c1ce677a10f6b5ff09c64[m
+Author: graefmf <70293952+graefmf@users.noreply.github.com>
+Date:   Fri Sep 11 19:14:39 2020 -0600
+
+    ProjectMilestone1_[203-1]
+
+[33mcommit dbd0fa6420bdc0013725a9065086fd91b78df28b[m
+Author: Zach Lefin <zachlefin@gmail.com>
+Date:   Thu Sep 10 15:45:38 2020 -0600
+
+    change pushpi
+
+[33mcommit 20e44c576181cfd8acbaa8fa8fdbe158e330c196[m
+Author: Zach Lefin <zachlefin@gmail.com>
+Date:   Thu Sep 10 15:39:10 2020 -0600
+
+    add note to pushpi
+
+[33mcommit cf8a43bb4030d36abba92ac0de1aa2635039bdbd[m
+Author: Zach Lefin <zachlefin@gmail.com>
+Date:   Thu Sep 10 15:33:38 2020 -0600
+
+    init pushpi script
+
+[33mcommit 073ab73fbbd2d301dc731067f889a880c3f7f8a9[m
+Author: Zach Lefin <zachlefin@gmail.com>
+Date:   Thu Sep 10 15:22:30 2020 -0600
+
+    init readme

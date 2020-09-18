@@ -2,4 +2,5 @@
 Test Merge
 -added by Max
 I'm monke
-Max resolved
+Max resolve
+ON THE NEW BRANCH 

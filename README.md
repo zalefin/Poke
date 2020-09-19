@@ -1,17 +1,11 @@
 # CSCI 3308 - Fall 2020
-Project Team Members
-Kyle Baird
--added by Max
-I'm monke
-Max resolve
-ON THE NEW BRANCH 
-Max resolved
-Zachary Lefin
-WEWLAD
-Helen
 
-Jackson Rini reviewed
+## Team members:
 
---------
-Jackson Rini
-Jake Nichols
+- Jackson Rini
+- Jake Nichols
+- Helen Kim
+- Max Graef
+- Zachary Lefin
+- Kyle Baird
+

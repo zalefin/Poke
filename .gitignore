@@ -4,3 +4,11 @@
 .vscode/
 .idea/
 .vim/
+src/PokeApp/.gradle
+src/PokeApp/gradle
+src/PokeApp/build.gradle
+src/PokeApp/gradle.properties
+src/PokeApp/gradlew*
+src/PokeApp/settings.gradle
+src/PokeApp/local.properties
+src/PokeApp/.idea

@@ -2,7 +2,6 @@
 
 ## Team members:
 
-- Jackson Rini
 - Jake Nichols
 - Helen Kim
 - Max Graef

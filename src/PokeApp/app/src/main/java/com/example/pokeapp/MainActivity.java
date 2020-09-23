@@ -31,33 +31,9 @@ public class MainActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
 
         final PokeyMaker p = new PokeyMaker();
-        Thread test = p.newThread(new Pokey(queue, "https://www.google.com"));
-        test.run();
-        // ...
-
-        // Instantiate the RequestQueue.
-        //RequestQueue queue = Volley.newRequestQueue(this);
-        //String url ="https://www.google.com";
-
-        /*
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        textView.setText("Response is: "+ response.substring(0,500));
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                textView.setText("That didn't work!");
-            }
-        });
-
-// Add the request to the RequestQueue.
-        queue.add(stringRequest);
-
-        */
+        for(int n=0; n<1; n++) {
+            Thread t = p.newThread(new Pokey(queue, "http://zachlef.in:8080"));
+            t.run();
+        }
     }
 }

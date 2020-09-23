@@ -14,8 +14,11 @@ class Client:
             UUID(uuid) # will throw error if invalid
             self.uuid = uuid
 
-    def register(self):
-        pass
+    def register(self, host, name):
+        r = requests.get('http://{}/register/name={}'.format(host,
+            name))
+        c = r.content
+        self._set_uuid(str(c, 'utf-8'))
 
     def poll(self):
         pass
@@ -42,10 +45,11 @@ if __name__ == '__main__':
         elif uin == 's':
             print('UUID: {}'.format(client.uuid))
         elif uin == 'r':
-            r = requests.get('http://{}/register/name={}'.format(args.host,
-                input('Enter name> ')))
-            c = r.content
-            client._set_uuid(str(c, 'utf-8'))
+            name = input('Enter name> ')
+            try:
+                client.register(args.host, name)
+            except:
+                print('Register failed')
         elif uin == 'P':
             print('no implement')
         elif uin == 'p':

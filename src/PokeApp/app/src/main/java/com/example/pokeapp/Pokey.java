@@ -33,7 +33,9 @@ public class Pokey implements Runnable{
             @Override
             public void onErrorResponse(VolleyError error) {
                 //textView.setText("That didn't work!");
-                Log.d("RESPONSE", "Failed, code " + error.networkResponse.statusCode);
+                if(error.networkResponse != null) {
+                    Log.d("RESPONSE", "Failed, code " + error.networkResponse.statusCode);
+                }
             }
         });
 

@@ -18,6 +18,9 @@ import java.lang.*;
 import com.example.pokeapp.Pokey;
 import com.example.pokeapp.PokeyMaker;
 
+//Register request
+//type in name, ex "wewlad"
+//send request to http://zachlef.in/register/name=wewlad, returns UUID
 
 public class MainActivity extends AppCompatActivity {
 

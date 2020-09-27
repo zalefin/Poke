@@ -27,7 +27,7 @@ SECRET_KEY = '6f%7+-=po*^2hf$-4-+ah!*ip7)wvl6s4@p44lr%5jhi1q^2)b'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'poke.zachlef.in']
 
 
 # Application definition
@@ -81,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'pokedata',
         'USER': 'admin',
-        'PASSWORD': 'aaa',
+        'PASSWORD': '4c3db8a883b2ec61f2330e45ec1d9c9c',
         'HOST': 'localhost',
         'PORT': '',
     }

@@ -33,7 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
     Thread wait;
     String regiResult = null;
     public void sendRegiRequest(View v) {
-        String nameText = ((EditText)findViewById(R.id.nameField)).getText().toString();
+        final String nameText = ((EditText)findViewById(R.id.nameField)).getText().toString();
         if(nameText != "") {
             //create pokey thread to register
             Thread t = p.newThread(new Pokey(queue, "https://poke.zachlef.in/register/name="+nameText, p));
@@ -46,7 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
                         regiResult = p.getResult();
                         if(regiResult != null) break;
                     }
-                    saveUUID(regiResult);
+                    saveUUID(nameText + '\n' + regiResult);
                 }
             });
             wait.start();

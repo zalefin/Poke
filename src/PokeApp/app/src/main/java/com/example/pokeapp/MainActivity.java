@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -43,7 +44,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final TextView textView = (TextView) findViewById(R.id.text);
+    }
+
+    //Called when QR is pressed
+    //switch to qr activity
+    public void openQR(View v) {
+        Intent i = new Intent(this, qrGenActivity.class);
+        startActivity(i);
     }
 
     //Called when Dummy1 is pressed
@@ -85,4 +92,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
 }

@@ -34,10 +34,12 @@ public class qrGenActivity extends AppCompatActivity{
         setContentView(R.layout.activity_qr_gen);
         //finds image view and sets image to generated bitmap
         ImageView qrView = (ImageView) findViewById(R.id.qrView);
-        loadedBmp = createQrCodeFromUUID(getUUID());
-
-        if(loadedBmp == null){
-            TextView noValidUUID = (TextView) findViewById(R.id.noQrCode);
+        loadedBmp = createQrCodeFromUUID(getUUID(false));
+        //If no valid UUID exists, display no valid UUID
+        TextView noValidUUID = (TextView) findViewById(R.id.noQrCode);
+        TextView uuidText = (TextView) findViewById(R.id.uuidViewQR);
+        uuidText.setText(getUUID(true));
+        if(loadedBmp == null) {
             noValidUUID.setText("No Valid UUID Loaded");
         }
         qrView.setImageBitmap(loadedBmp);
@@ -49,7 +51,7 @@ public class qrGenActivity extends AppCompatActivity{
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private String getUUID(){
+    private String getUUID(boolean getName){
         String filename = getString(R.string.uuid_file);
         FileInputStream fis = null;
         InputStreamReader isr = null;
@@ -74,6 +76,9 @@ public class qrGenActivity extends AppCompatActivity{
             } finally {
                 String result = stringBuilder.toString();
                 String justUUID = result.substring(result.length()-37,result.length()-1);
+                if(getName){
+                    return result;
+                }
                 return justUUID;
             }
         }

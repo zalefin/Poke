@@ -37,7 +37,6 @@ import com.example.pokeapp.PokeyMaker;
 //send request to http://zachlef.in/register/name=wewlad, returns UUID
 
 public class MainActivity extends AppCompatActivity {
-    private Boolean createNewQr = false;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -52,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
     //switch to qr activity
     public void openQR(View v) {
         Intent i = new Intent(this, qrGenActivity.class);
-        i.putExtra("createNewQr", createNewQr);
         startActivity(i);
     }
 

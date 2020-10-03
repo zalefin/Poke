@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ['localhost', 'poke.zachlef.in']
 # Application definition
 
 INSTALLED_APPS = [
-    'register',
+    'poke',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

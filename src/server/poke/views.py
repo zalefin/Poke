@@ -14,3 +14,7 @@ def register(request, name):
     User.objects.create(uuid=uuid, name=name, reg_date=dt_aware) # commit to database
     return HttpResponse(uuid)
 
+
+def add_friend(request, user, target):
+    return HttpResponse("success")
+

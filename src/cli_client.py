@@ -19,7 +19,9 @@ class Client:
             self.uuid = uuid
 
     def _get_base_url(self):
-        return '{}://{}/'.format('https' if self.ssl else 'http', self.host)
+        prot = 'https' if self.ssl else 'http'
+        s = '{}://{}/'.format(prot, self.host)
+        return s
 
     def register(self, name):
         r = requests.post('{}poke/register'.format(self._get_base_url()),
@@ -44,21 +46,23 @@ class Client:
             print('No friends')
 
     def poll(self):
-        pass
+        r = requests.post('{}poke/update'.format(self._get_base_url()),
+                data={'user': str(self.uuid)})
+        return r.content
 
     def poke(self, target_uuid):
         pass
 
 if __name__ == '__main__':
     parser = ArgumentParser()
-    parser.add_argument('--host', default='localhost:8000', type=str, nargs=1, help='host address')
+    parser.add_argument('--host', default='localhost:8000', type=str, help='host address')
     parser.add_argument('--ssl', action='store_true', help='use https')
-    parser.add_argument('--data', default=None, type=str, nargs=1, help='data file to use')
+    parser.add_argument('--data', default=None, type=str, help='data file to use')
     parser.add_argument('uuid', default=None, type=str, nargs='?', help='client uuid')
     args = parser.parse_args()
-    client = Client(args.uuid, args.ssl, args.host[0])
+    client = Client(args.uuid, args.ssl, args.host)
     if args.data:
-        with open(args.data[0], 'r') as f:
+        with open(args.data, 'r') as f:
             data = json.loads(f.read())
         client._set_uuid(data['uuid'])
         client.friends = [UUID(friend) for friend in data['friends']]
@@ -75,6 +79,8 @@ if __name__ == '__main__':
                 continue
         elif uin == 's':
             print('UUID: {}'.format(client.uuid))
+        elif uin == 'n':
+            print(client.name)
         elif uin == 'r':
             name = input('Enter name> ')
             try:
@@ -82,7 +88,10 @@ if __name__ == '__main__':
             except:
                 print('Register failed')
         elif uin == 'P':
-            print('no implement')
+            update_dat = json.loads(client.poll())
+            client.friends = [UUID(friend_uuid) for friend_uuid in update_dat['friends']]
+            client.name = update_dat['name']
+            print(update_dat)
         elif uin == 'p':
             print('no implement')
         elif uin == 'f':
@@ -99,7 +108,7 @@ if __name__ == '__main__':
             with open(input('Path> '), 'w') as f:
                 f.write(json.dumps({'uuid': str(client.uuid), 'friends': [str(u) for u in client.friends]}))
         elif uin == 'h':
-            print('S: Set UUID\ns: Show UUID\nr: Register\nP: Poll+Update\np: Poke\nf: List friends\na: Add friend\nd: Remove friend\ne: Export data\nh: Help\nq: Quit')
+            print('S: Set UUID\ns: Show UUID\nn: Show name\nr: Register\nP: Poll+Update\np: Poke\nf: List friends\na: Add friend\nd: Remove friend\ne: Export data\nh: Help\nq: Quit')
         elif uin == 'q':
             break
         else:

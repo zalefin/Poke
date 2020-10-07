@@ -42,13 +42,16 @@ import com.example.pokeapp.PokeyMaker;
 
 public class MainActivity extends AppCompatActivity {
 
+    NotiMan notificationManager;
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        createNotificationChannel(); // needs to run at startup
+        //sdk version is neeced for getSystemService
+        notificationManager = new NotiMan(this);
     }
 
     //Called when QR is pressed
@@ -101,36 +104,9 @@ public class MainActivity extends AppCompatActivity {
     /*
     =====NOTIFICATION BRANCH=====
     */
-    private static String CHANNEL_ID = "0";
-    private int notificationId = 0;
-
-    private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.channel_name);
-            String description = getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
 
     public void notify(View v) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.qrbackgroundtest)
-                .setContentTitle("Notification")
-                .setContentText("This is a notification.")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        // notificationId is a unique int for each notification that you must define
-        notificationManager.notify(notificationId, builder.build());
-        notificationId++;
+        notificationManager.createNotification();
     }
 
 }

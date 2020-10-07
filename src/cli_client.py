@@ -19,7 +19,7 @@ class Client:
             self.uuid = uuid
 
     def _get_base_url(self):
-        return ('https' if self.ssl else 'http') + '://' + self.host + '/'
+        return '{}://{}/'.format('https' if self.ssl else 'http', self.host)
 
     def register(self, name):
         r = requests.post('{}poke/register'.format(self._get_base_url()),
@@ -56,7 +56,7 @@ if __name__ == '__main__':
     parser.add_argument('--data', default=None, type=str, nargs=1, help='data file to use')
     parser.add_argument('uuid', default=None, type=str, nargs='?', help='client uuid')
     args = parser.parse_args()
-    client = Client(args.uuid, args.ssl, args.host)
+    client = Client(args.uuid, args.ssl, args.host[0])
     if args.data:
         with open(args.data[0], 'r') as f:
             data = json.loads(f.read())

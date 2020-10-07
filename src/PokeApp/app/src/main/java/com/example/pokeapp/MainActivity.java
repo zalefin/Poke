@@ -54,14 +54,19 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    //Called when Dummy1 is pressed
+    public void scan(View v) {
+        Intent i = new Intent(this, scanActivity.class);
+        startActivity(i);
+    }
+
+    //Called when register is pressed
     //for networking: switch to register activity
     public void d1(View v) {
         Intent i = new Intent(this, RegisterActivity.class);
         startActivity(i);
     }
 
-    //Called when Dummy2 is pressed
+    //Called when showUUID is pressed
     //for networking: loads UUID from file
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void d2(View v) {

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -36,7 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
         final String nameText = ((EditText)findViewById(R.id.nameField)).getText().toString();
         if(nameText != "") {
             //create pokey thread to register
-            Thread t = p.newThread(new Pokey(queue, "https://poke.zachlef.in/register/name="+nameText, p));
+            Thread t = p.newThread(new Pokey(queue, "https://poke.zachlef.in/poke/register/name="+nameText, p));
             t.start();
             //create thread to wait for result
             wait = new Thread(new Runnable(){

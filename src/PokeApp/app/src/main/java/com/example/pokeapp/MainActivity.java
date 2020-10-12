@@ -43,6 +43,7 @@ import com.example.pokeapp.PokeyMaker;
 public class MainActivity extends AppCompatActivity {
 
     NotiMan notificationManager;
+    FileMan fileManager;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         //sdk version is neeced for getSystemService
         notificationManager = new NotiMan(this);
+        fileManager = new FileMan(this);
     }
 
     //Called when QR is pressed
@@ -72,10 +74,6 @@ public class MainActivity extends AppCompatActivity {
     //for networking: loads UUID from file
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void d2(View v) {
-        FileMan f = new FileMan(this);
-        Log.d("FileMan", f.getName() + " " + f.getUUID());
-        f.writeName("Jake");
-        f.close();
     }
 
     /*

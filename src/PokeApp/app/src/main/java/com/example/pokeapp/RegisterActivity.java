@@ -1,9 +1,11 @@
 package com.example.pokeapp;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,23 +22,27 @@ public class RegisterActivity extends AppCompatActivity {
 
     RequestQueue queue;
     PokeyMaker p;
+    FileMan fileManager;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        queue = Volley.newRequestQueue(this);
-        p = new PokeyMaker();
+        queue = Volley.newRequestQueue(this); //request queue
+        p = new PokeyMaker(); //basically just a thread factory
+        fileManager = new FileMan(this);
     }
 
     Thread wait;
     String regiResult = null;
     public void sendRegiRequest(View v) {
-        final String nameText = ((EditText)findViewById(R.id.nameField)).getText().toString();
+        String nameText = ((EditText)findViewById(R.id.nameField)).getText().toString();
+        final String args[] = {"register", nameText};
         if(nameText != "") {
             //create pokey thread to register
-            Thread t = p.newThread(new Pokey(queue, "https://poke.zachlef.in/register", p));
+            Thread t = p.newThread(new Pokey(queue, "https://poke.zachlef.in/poke/register", args));
             t.start();
             //create thread to wait for result
             wait = new Thread(new Runnable(){
@@ -46,36 +52,18 @@ public class RegisterActivity extends AppCompatActivity {
                         regiResult = p.getResult();
                         if(regiResult != null) break;
                     }
-                    saveUUID(nameText + '\n' + regiResult);
+                    fileManager.writeName(args[1]);
+                    fileManager.writeUUID(regiResult);
+                    fileManager.updateFile();
+                    returnToMain();
                 }
             });
             wait.start();
         }
     }
 
-    public void saveUUID(String U) {
-        String filename = getString(R.string.uuid_file);
-        String contents = U;
-        FileOutputStream fos = null;
-        //open file output and write string as bytes
-        try {
-            fos = this.openFileOutput(filename, Context.MODE_PRIVATE);
-            fos.write(contents.getBytes());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //close file, if it was ever opened
-        if(fos != null) {
-            try {
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        //return to main activity
+    private void returnToMain() {
+        Log.d("RETURN", "should return here");
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }

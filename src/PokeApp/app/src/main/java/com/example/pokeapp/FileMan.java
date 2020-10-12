@@ -77,7 +77,7 @@ public class FileMan {
         return n;
     }
 
-    public void close() {
+    public void updateFile() {
         writeData();
     }
 

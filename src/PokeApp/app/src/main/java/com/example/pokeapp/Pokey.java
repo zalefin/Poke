@@ -24,65 +24,56 @@ import java.util.Map;
 public class Pokey implements Runnable{
     RequestQueue queue;// = Volley.newRequestQueue(this);
     String url;// ="https://www.google.com";
-    PokeyMaker source;
+    String[] args;
 
-    JSONObject body = new JSONObject();
-
-    public Pokey(RequestQueue q, String u, PokeyMaker p) {
-        queue = q;
-        url = u;
-        source = p;
+    /*
+     * Jake, writing documentation? Surely not.
+     * args[0] represents the type of request, denoted by its endpoint. The rest depend. Here's a list.
+     * args[0] = register, args[1] = name
+     * args[0] = friends/add, args[1] = user_UUID, args[2] = target_UUID
+     * The arguments are organized so that addXRequest takes arguments in order.
+     */
+    public Pokey(RequestQueue queue, String url, String[] args) {
+        this.queue = queue;
+        this.url = url;
+        this.args = args;
     }
 
     //@Override
     public void run() {
-        try {
-            String URL = "https://poke.zachlef.in/register";
-            JSONObject jsonBody = new JSONObject();
-            jsonBody.put("name","wewlad");
-
-            final String requestBody = jsonBody.toString();
-
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Log.i("VOLLEY", response);
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("VOLLEY", error.toString());
-                }
-            }) {
-                @Override
-                public String getBodyContentType() {
-                    return "application/json; charset=utf-8";
-                }
-
-                @Override
-                public byte[] getBody() throws AuthFailureError {
-                    try {
-                        return requestBody == null ? null : requestBody.getBytes("utf-8");
-                    } catch (UnsupportedEncodingException uee) {
-                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                        return null;
-                    }
-                }
-
-                //@Override
-                protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                    String responseString = "";
-                    if (response != null) {
-                        responseString = String.valueOf(response.statusCode);
-                        // can get more details such as response.headers
-                    }
-                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-                }
-            };
-
-            queue.add(stringRequest);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        Log.d("POKEY", "Starting pokey with endpoint " + args[0]);
+        switch(args[0]) {
+            case "register":
+                addRegiRequest(args[1]);
+                break;
+            case "friends/add":
+                //unimplemented
+                break;
+            default:
+                Log.d("POKEY", "endpoint not found");
         }
     }
-}
+
+    void addRegiRequest(String name) {
+        final String regiName = name;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.i("VOLLEY", response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("VOLLEY", error.toString());
+            }
+        }) {
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("name", regiName);
+                return params;
+            }
+        };
+        queue.add(stringRequest);
+    }
+};

@@ -23,6 +23,7 @@ import java.util.Map;
 
 public class Pokey implements Runnable{
     RequestQueue queue;// = Volley.newRequestQueue(this);
+    PokeyMaker source;
     String url;// ="https://www.google.com";
     String[] args;
 
@@ -33,8 +34,9 @@ public class Pokey implements Runnable{
      * args[0] = friends/add, args[1] = user_UUID, args[2] = target_UUID
      * The arguments are organized so that addXRequest takes arguments in order.
      */
-    public Pokey(RequestQueue queue, String url, String[] args) {
+    public Pokey(RequestQueue queue, PokeyMaker source, String url, String[] args) {
         this.queue = queue;
+        this.source = source;
         this.url = url;
         this.args = args;
     }
@@ -60,6 +62,7 @@ public class Pokey implements Runnable{
             @Override
             public void onResponse(String response) {
                 Log.i("VOLLEY", response);
+                source.setResult(response);
             }
         }, new Response.ErrorListener() {
             @Override

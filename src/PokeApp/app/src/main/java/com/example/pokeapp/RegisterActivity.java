@@ -42,7 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
         final String args[] = {"register", nameText};
         if(nameText != "") {
             //create pokey thread to register
-            Thread t = p.newThread(new Pokey(queue, "https://poke.zachlef.in/poke/register", args));
+            Thread t = p.newThread(new Pokey(queue, p, "https://poke.zachlef.in/poke/register", args));
             t.start();
             //create thread to wait for result
             wait = new Thread(new Runnable(){
@@ -63,7 +63,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void returnToMain() {
-        Log.d("RETURN", "should return here");
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }

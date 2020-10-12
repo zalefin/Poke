@@ -36,7 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
         final String nameText = ((EditText)findViewById(R.id.nameField)).getText().toString();
         if(nameText != "") {
             //create pokey thread to register
-            Thread t = p.newThread(new Pokey(queue, "https://poke.zachlef.in/poke/register/name="+nameText, p));
+            Thread t = p.newThread(new Pokey(queue, "https://poke.zachlef.in/register", p));
             t.start();
             //create thread to wait for result
             wait = new Thread(new Runnable(){

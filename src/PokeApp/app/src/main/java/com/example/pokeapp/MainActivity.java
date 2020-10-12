@@ -74,7 +74,8 @@ public class MainActivity extends AppCompatActivity {
     //for networking: loads UUID from file
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void d2(View v) {
-        
+        TextView text = (TextView)findViewById(R.id.uuidView);
+        text.setText(fileManager.getName() + "\n" + fileManager.getUUID());
     }
 
     /*

@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">PokeApp</string>
-    <string name="uuid_file">UUID</string>
+    <string name="uuid_file">UUID.json</string>
+    <string name="channel_name">default_channel</string>
+    <string name="channel_description">Default Notification Channel</string>
 </resources>

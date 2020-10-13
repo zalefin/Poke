@@ -7,4 +7,4 @@
 - Max Graef
 - Zachary Lefin
 - Kyle Baird
-
+- Jackson Rini

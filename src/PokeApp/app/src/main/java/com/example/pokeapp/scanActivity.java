@@ -20,6 +20,7 @@ public class scanActivity extends AppCompatActivity {
 
     //qr code scanner object
     private IntentIntegrator qrScan;
+    //UUID Saved as String
     private String scannedUUID;
     public boolean hasScanned = false;
 
@@ -27,16 +28,20 @@ public class scanActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
-        if(!this.checkCameraHardware(this) && this.checkCameraPermission()){
+        //checks if device has camera and camera permissions, if not will exit activity
+        //need to add ask permissions
+        if(!checkCameraHardware(this) && checkCameraPermission()){
             Log.i("tag","No camera found.");
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
+        //creates new intent integrator using zxing
         qrScan = new IntentIntegrator(this);
         qrScan.initiateScan();
 
     }
 
+    //gets result after qr scanning intent finishes
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

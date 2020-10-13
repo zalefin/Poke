@@ -32,6 +32,7 @@ import java.nio.charset.StandardCharsets;
 
 public class qrGenActivity extends AppCompatActivity{
 
+    FileMan fileManager;
     private Bitmap loadedBmp = null;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -41,11 +42,14 @@ public class qrGenActivity extends AppCompatActivity{
         setContentView(R.layout.activity_qr_gen);
         //finds image view and sets image to generated bitmap
         ImageView qrView = (ImageView) findViewById(R.id.qrView);
-        loadedBmp = createQrCodeFromUUID(getUUID(false));
+
+        fileManager = new FileMan(this);
+        loadedBmp = createQrCodeFromUUID(fileManager.getUUID());
         //If no valid UUID exists, display no valid UUID
         TextView noValidUUID = (TextView) findViewById(R.id.noQrCode);
         TextView uuidText = (TextView) findViewById(R.id.uuidViewQR);
-        uuidText.setText(getUUID(true));
+        //gets UUID from fileman
+        uuidText.setText(fileManager.getName() + "\n" + fileManager.getUUID());
         if(loadedBmp == null) {
             noValidUUID.setText("No Valid UUID Loaded");
         }
@@ -53,42 +57,7 @@ public class qrGenActivity extends AppCompatActivity{
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private String getUUID(boolean getName){
-        String filename = getString(R.string.uuid_file);
-        FileInputStream fis = null;
-        InputStreamReader isr = null;
-        //open file input to get back earlier thing
-        try {
-            fis = this.openFileInput(filename);
-            isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        //assuming that worked, build string out of file contents
-        if(fis != null && isr != null) {
-            StringBuilder stringBuilder = new StringBuilder();
-            try (BufferedReader reader = new BufferedReader(isr)) {
-                String line = reader.readLine();
-                while (line != null) {
-                    stringBuilder.append(line).append('\n');
-                    line = reader.readLine();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                String result = stringBuilder.toString();
-                String justUUID = result.substring(result.length()-37,result.length()-1);
-                if(getName){
-                    return result;
-                }
-                return justUUID;
-            }
-        }
-        return "";
-    }
-
-    //new qr code creation
+    //new qr code creation using zxing
     public Bitmap createQrCodeFromUUID(String UUID){
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {

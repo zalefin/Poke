@@ -46,6 +46,11 @@ class Client:
             print('No friends')
 
     def poll(self):
+        r = requests.post('{}poke/poll'.format(self._get_base_url()),
+                data={'user': str(self.uuid)})
+        return r.content
+
+    def update(self):
         r = requests.post('{}poke/update'.format(self._get_base_url()),
                 data={'user': str(self.uuid)})
         return r.content
@@ -71,6 +76,7 @@ if __name__ == '__main__':
     if args.data:
         with open(args.data, 'r') as f:
             data = json.loads(f.read())
+        client.name = data['name']
         client._set_uuid(data['uuid'])
         client.friends = [UUID(friend) for friend in data['friends']]
 
@@ -85,20 +91,23 @@ if __name__ == '__main__':
                 print('Invalid UUID: set failed')
                 continue
         elif uin == 's':
+            print('Name: {}'.format(client.name))
             print('UUID: {}'.format(client.uuid))
-        elif uin == 'n':
-            print(client.name)
         elif uin == 'r':
             name = input('Enter name> ')
             try:
                 client.register(name)
+                client.name = name
             except:
                 print('Register failed')
         elif uin == 'P':
             update_dat = json.loads(client.poll())
+            print(update_dat)
+        elif uin == 'u':
+            update_dat = json.loads(client.update())
             client.friends = [UUID(friend_uuid) for friend_uuid in update_dat['friends']]
             client.name = update_dat['name']
-            print(update_dat)
+            print('Updated friends and name')
         elif uin == 'p':
             client.print_friends()
             fchoice = client.friends[int(input('Choice> '))]
@@ -116,9 +125,9 @@ if __name__ == '__main__':
             print('no implement')
         elif uin == 'e':
             with open(input('Path> '), 'w') as f:
-                f.write(json.dumps({'uuid': str(client.uuid), 'friends': [str(u) for u in client.friends]}))
+                f.write(json.dumps({'name': str(client.name), 'uuid': str(client.uuid), 'friends': [str(u) for u in client.friends]}))
         elif uin == 'h':
-            print('S: Set UUID\ns: Show UUID\nn: Show name\nr: Register\nP: Poll+Update\np: Poke\nf: List friends\na: Add friend\nd: Remove friend\ne: Export data\nh: Help\nq: Quit')
+            print('S: Set UUID\ns: Show UUID and Name\nr: Register\nP: Poll\nu: Update\np: Poke\nf: List friends\na: Add friend\nd: Remove friend\ne: Export data\nh: Help\nq: Quit')
         elif uin == 'q':
             break
         else:

@@ -40,8 +40,8 @@ class Client:
 
     def print_friends(self):
         if len(self.friends):
-            for fr in self.friends:
-                print(fr)
+            for i, fr in enumerate(self.friends):
+                print(i, fr)
         else:
             print('No friends')
 
@@ -50,8 +50,15 @@ class Client:
                 data={'user': str(self.uuid)})
         return r.content
 
-    def poke(self, target_uuid):
-        pass
+    def poke(self, target_uuid, payload):
+        r = requests.post('{}poke/poke'.format(self._get_base_url()),
+                data={
+                    'user': str(self.uuid),
+                    'target': str(target_uuid),
+                    'payload': payload
+                    })
+        print(r.content)
+        return r.content
 
 if __name__ == '__main__':
     parser = ArgumentParser()
@@ -93,7 +100,10 @@ if __name__ == '__main__':
             client.name = update_dat['name']
             print(update_dat)
         elif uin == 'p':
-            print('no implement')
+            client.print_friends()
+            fchoice = client.friends[int(input('Choice> '))]
+            payload = input('Message> ')
+            client.poke(fchoice, payload)
         elif uin == 'f':
             client.print_friends()
         elif uin == 'a':

@@ -14,14 +14,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="false">
-        <activity android:name=".scanActivity"/>
+        <activity android:name=".scanActivity"
+            android:screenOrientation="portrait"
+            tools:replace="screenOrientation"/>
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="portrait"
             tools:replace="screenOrientation" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".qrGenActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".RegisterActivity"
+            android:screenOrientation="portrait"
+            tools:replace="screenOrientation"/>
+        <activity android:name=".qrGenActivity"
+            android:screenOrientation="portrait"
+            tools:replace="screenOrientation"/>
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            tools:replace="screenOrientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

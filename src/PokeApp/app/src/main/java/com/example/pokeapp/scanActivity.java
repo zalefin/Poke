@@ -1,61 +1,68 @@
 package com.example.pokeapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.SurfaceHolder;
 import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import java.io.IOException;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 public class scanActivity extends AppCompatActivity {
 
-    private Camera sCamera;
-    private scanPreview sPreview;
+    //qr code scanner object
+    private IntentIntegrator qrScan;
+    private String scannedUUID;
+    public boolean hasScanned = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
-        if(!checkCameraHardware(this) && checkCameraPermission()){
+        if(!this.checkCameraHardware(this) && this.checkCameraPermission()){
             Log.i("tag","No camera found.");
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
-
-        sCamera = getCameraInstance();
-        sPreview = new scanPreview(this,sCamera);
-        FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
-        preview.addView(sPreview);
+        qrScan = new IntentIntegrator(this);
+        qrScan.initiateScan();
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            //if qrcode has nothing in it
+            if (result.getContents() == null) {
+                Toast.makeText(this, "Result Not Found", Toast.LENGTH_LONG).show();
+            } else {
+                Log.i("tag", result.getContents());
+                scannedUUID = result.getContents();
+                ((TextView)findViewById(R.id.uuidViewScan)).setText(scannedUUID);
+            }
+        }
+    }
+
+    public void exitButton(View v) {
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
+    }
 
     private boolean checkCameraPermission(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
            return true;
         }
         return false;
-    }
-
-    public void captureButton(View v) {
-        sCamera.release();
-        Intent i = new Intent(this, MainActivity.class);
-        startActivity(i);
-        //sCamera.takePicture(null,null,picture);
     }
 
     private boolean checkCameraHardware(Context context) {
@@ -66,17 +73,6 @@ public class scanActivity extends AppCompatActivity {
             // no camera on this device
             return false;
         }
-    }
-
-    public static Camera getCameraInstance(){
-        Camera c = null;
-        try {
-            c = Camera.open(); // attempt to get a Camera instance
-        }
-        catch (Exception e){
-            // Camera is not available (in use or does not exist)
-        }
-        return c; // returns null if camera is unavailable
     }
 
 

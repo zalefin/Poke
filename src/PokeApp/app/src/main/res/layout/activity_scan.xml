@@ -6,25 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".scanActivity">
 
-    <FrameLayout
-        android:id="@+id/camera_preview"
-        android:layout_width="356dp"
-        android:layout_height="216dp"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.539" />
-
     <Button
-        android:id="@+id/button_capture"
+        android:id="@+id/button_exit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Capture"
-        android:onClick="captureButton"
+        android:text="Exit"
+        android:onClick="exitButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,6 +23,19 @@
         android:layout_marginBottom="500dp"
         android:layout_marginLeft="162dp"
         android:layout_marginRight="162dp" />
+
+
+    <TextView
+        android:id="@+id/uuidViewScan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_exit"
+        android:text="UUID"
+        tools:layout_editor_absoluteX="173dp"
+        tools:layout_editor_absoluteY="532dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

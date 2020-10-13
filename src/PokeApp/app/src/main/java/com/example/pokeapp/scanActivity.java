@@ -22,7 +22,6 @@ public class scanActivity extends AppCompatActivity {
     private IntentIntegrator qrScan;
     //UUID Saved as String
     private String scannedUUID;
-    public boolean hasScanned = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +49,8 @@ public class scanActivity extends AppCompatActivity {
             //if qrcode has nothing in it
             if (result.getContents() == null) {
                 Toast.makeText(this, "Result Not Found", Toast.LENGTH_LONG).show();
+                Intent i = new Intent(this, MainActivity.class);
+                startActivity(i);
             } else {
                 Log.i("tag", result.getContents());
                 scannedUUID = result.getContents();

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.pokeapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,6 +15,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="false">
         <activity android:name=".scanActivity"/>
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="portrait"
+            tools:replace="screenOrientation" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".qrGenActivity" />
         <activity android:name=".MainActivity">

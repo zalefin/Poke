@@ -58,7 +58,7 @@ public class qrGenActivity extends AppCompatActivity{
     }
 
     //new qr code creation using zxing
-    public Bitmap createQrCodeFromUUID(String UUID){
+    private Bitmap createQrCodeFromUUID(String UUID){
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
             BitMatrix bitMatrix = multiFormatWriter.encode(UUID, BarcodeFormat.QR_CODE,200,200);

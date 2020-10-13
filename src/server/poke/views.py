@@ -58,13 +58,26 @@ def register(request):
 
 @csrf_exempt
 @_must_be_POST
-def update_poll(request):
+def poll(request):
+    user = request.POST['user']
+    if User.objects.filter(uuid=user).exists():
+        dat = {
+                'pokes': POKE_QUEUE.pop(user) if user in POKE_QUEUE.keys() else [],
+                }
+        return HttpResponse(json.dumps(dat))
+
+    else:
+        return HttpResponse('')
+
+
+@csrf_exempt
+@_must_be_POST
+def update(request):
     user = request.POST['user']
     if User.objects.filter(uuid=user).exists():
         dat = {
                 'name': User.objects.filter(uuid=user).values('name')[0]['name'], # TODO see if there is a nicer way that this
                 'friends': [v['friend_uuid'] for v in Friend.objects.filter(user_uuid=user).values('friend_uuid')],
-                'pokes': POKE_QUEUE.pop(user) if user in POKE_QUEUE.keys() else [],
                 }
         return HttpResponse(json.dumps(dat))
 

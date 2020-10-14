@@ -68,10 +68,10 @@ def add_friend(request):
 def delete_friend(request):
     user = request.POST['user']
     target = request.POST['target']
-    if Friend.objects.filter(user_uuid=user,friend_uuid=target).exists(): #existing friends case 
+    if Friend.objects.filter(user_uuid=user,friend_uuid=target).exists(): #existing friends case
         Friend.objects.filter(user_uuid=user, friend_uuid=target).delete() #dt aware and pokes included?
         Friend.objects.filter(user_uuid=target, friend_uuid=user).delete()
-        return HttpResponse("friend has been deleted")
+        return HttpResponse("success")
     else:
         return HttpResponse("this friend doesn't exist")
-        
+

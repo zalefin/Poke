@@ -43,7 +43,7 @@ def do_poke_inbound(request):
         friend_record.save() # commit row change to db
         return HttpResponse('success')
     else:
-        return HttpResponse('')
+        return HttpResponse('failure')
 
 
 @csrf_exempt
@@ -67,7 +67,7 @@ def poll(request):
         return HttpResponse(json.dumps(dat))
 
     else:
-        return HttpResponse('')
+        return HttpResponse('failure')
 
 
 @csrf_exempt
@@ -82,7 +82,7 @@ def update(request):
         return HttpResponse(json.dumps(dat))
 
     else:
-        return HttpResponse('')
+        return HttpResponse('failure')
 
 
 @csrf_exempt
@@ -99,7 +99,7 @@ def add_friend(request):
             Friend.objects.create(user_uuid=target, friend_uuid=user, added_date=dt_aware, total_pokes=0)
             return HttpResponse("success")
         else:
-            return HttpResponse("invalid user")
+            return HttpResponse("failure")
 
 @csrf_exempt
 @_must_be_POST
@@ -111,5 +111,5 @@ def delete_friend(request):
         Friend.objects.filter(user_uuid=target, friend_uuid=user).delete()
         return HttpResponse("success")
     else:
-        return HttpResponse("this friend doesn't exist")
+        return HttpResponse("failure")
 

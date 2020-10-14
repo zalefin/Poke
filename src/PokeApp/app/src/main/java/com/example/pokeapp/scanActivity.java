@@ -7,8 +7,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -25,8 +23,8 @@ public class scanActivity extends AppCompatActivity {
     //qr code scanner object
     private IntentIntegrator qrScan;
     //PokeyMaker for network
-    private PokeyMaker p;
-    private RequestQueue queue;
+    PokeyMaker p;
+    RequestQueue queue;
     //fileManager for reading user uuid
     FileMan fileManager;
 

@@ -26,7 +26,7 @@ public class addFriendActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_qr_gen);
+        setContentView(R.layout.activity_add_friend);
         //finds image view and sets image to generated bitmap
         ImageView qrView = (ImageView) findViewById(R.id.qrView);
 

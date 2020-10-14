@@ -131,8 +131,9 @@ if __name__ == '__main__':
             except:
                 print('Invalid UUID')
         elif uin == 'd':
-            frienduuid = input('Friend> ')
-            client.delete_friend(frienduuid)
+            client.print_friends()
+            fchoice = client.friends[int(input('Choice> '))]
+            client.delete_friend(fchoice)
         elif uin == 'e':
             with open(input('Path> '), 'w') as f:
                 f.write(json.dumps({'name': str(client.name), 'uuid': str(client.uuid), 'friends': [str(u) for u in client.friends]}))

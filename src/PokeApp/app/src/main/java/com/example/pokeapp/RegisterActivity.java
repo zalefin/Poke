@@ -54,6 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
             });
             wait.start();
         }
+
     }
 
     private void returnToMain() {

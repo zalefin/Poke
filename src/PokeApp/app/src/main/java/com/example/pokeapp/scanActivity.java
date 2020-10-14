@@ -80,6 +80,4 @@ public class scanActivity extends AppCompatActivity {
             return false;
         }
     }
-
-
 }

@@ -54,7 +54,6 @@ public class qrGenActivity extends AppCompatActivity{
             noValidUUID.setText("No Valid UUID Loaded");
         }
         qrView.setImageBitmap(loadedBmp);
-
     }
 
     //new qr code creation using zxing

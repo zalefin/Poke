@@ -101,3 +101,15 @@ def add_friend(request):
         else:
             return HttpResponse("invalid user")
 
+@csrf_exempt
+@_must_be_POST
+def delete_friend(request):
+    user = request.POST['user']
+    target = request.POST['target']
+    if Friend.objects.filter(user_uuid=user,friend_uuid=target).exists(): #existing friends case
+        Friend.objects.filter(user_uuid=user, friend_uuid=target).delete() #dt aware and pokes included?
+        Friend.objects.filter(user_uuid=target, friend_uuid=user).delete()
+        return HttpResponse("success")
+    else:
+        return HttpResponse("this friend doesn't exist")
+

@@ -2,13 +2,8 @@ package com.example.pokeapp;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,18 +17,10 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-
 
 public class addFriendActivity extends AppCompatActivity{
 
     FileMan fileManager;
-    private Bitmap loadedBmp = null;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -44,7 +31,7 @@ public class addFriendActivity extends AppCompatActivity{
         ImageView qrView = (ImageView) findViewById(R.id.qrView);
 
         fileManager = new FileMan(this);
-        loadedBmp = createQrCodeFromUUID(fileManager.getUUID());
+        Bitmap loadedBmp = createQrCodeFromUUID(fileManager.getUUID());
         //If no valid UUID exists, display no valid UUID
         TextView noValidUUID = (TextView) findViewById(R.id.noQrCode);
         TextView uuidText = (TextView) findViewById(R.id.uuidViewQR);
@@ -58,6 +45,7 @@ public class addFriendActivity extends AppCompatActivity{
 
 
     //new qr code creation using zxing
+    //returns bitmap created from UUID string
     private Bitmap createQrCodeFromUUID(String UUID){
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {

@@ -46,12 +46,29 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    //Called when QR is pressed
-    //switch to qr activity
+    //Called when Friends button is pressed
+    //opens friends Activity
     public void openFriends(View v) {
         Intent i = new Intent(this, friendsActivity.class);
         startActivity(i);
     }
+
+    //Called when showUUID is pressed
+    //for networking: loads UUID from file
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void showUUID(View v) {
+        TextView text = (TextView)findViewById(R.id.uuidView);
+        text.setText(fileManager.getName() + "\n" + fileManager.getUUID());
+    }
+
+    /*
+    =====NOTIFICATION BRANCH=====
+    */
+
+    public void notify(View v) {
+        notificationManager.createNotification();
+    }
+
 
     //#####UNIMPLEMENTED ENDPOINTS START HERE#####
 
@@ -86,21 +103,4 @@ public class MainActivity extends AppCompatActivity {
     public void placeholderResult(String r) {
         Log.d("RESULT", r);
     }
-
-    //Called when showUUID is pressed
-    //for networking: loads UUID from file
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void showUUID(View v) {
-        TextView text = (TextView)findViewById(R.id.uuidView);
-        text.setText(fileManager.getName() + "\n" + fileManager.getUUID());
-    }
-
-    /*
-    =====NOTIFICATION BRANCH=====
-    */
-
-    public void notify(View v) {
-        notificationManager.createNotification();
-    }
-
 }

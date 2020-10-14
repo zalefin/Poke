@@ -63,10 +63,12 @@ public class scanActivity extends AppCompatActivity {
         if (result != null) {
             //if qrcode has nothing in it
             if (result.getContents() == null) {
+                //goes back to friends List
                 Toast.makeText(this, "Result Not Found", Toast.LENGTH_LONG).show();
                 Intent i = new Intent(this, friendsActivity.class);
                 startActivity(i);
             } else {
+                //logs scanned UUID and sends request for add friend
                 Log.i("tag", result.getContents());
                 addFriendFromUUID(result.getContents());
                 Intent i = new Intent(this, addFriendActivity.class);
@@ -75,6 +77,7 @@ public class scanActivity extends AppCompatActivity {
         }
     }
 
+    //sends network request with scanned UUID
     public void addFriendFromUUID(String UUID) {
         final String args[] = {"friends/add", fileManager.getUUID(), UUID};
         Thread wait; //calls a method once p has a result
@@ -104,6 +107,7 @@ public class scanActivity extends AppCompatActivity {
         Log.d("RESULT", r);
     }
 
+    //checks if app has given camera permission
     private boolean checkCameraPermission(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
            return true;
@@ -111,6 +115,7 @@ public class scanActivity extends AppCompatActivity {
         return false;
     }
 
+    //checks if phone has a camera
     private boolean checkCameraHardware(Context context) {
         if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
             // this device has a camera

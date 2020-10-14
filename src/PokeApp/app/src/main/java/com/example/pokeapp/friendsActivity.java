@@ -14,6 +14,7 @@ import com.android.volley.toolbox.Volley;
 
 public class friendsActivity extends AppCompatActivity {
 
+    //for getting user data
     FileMan fileManager;
     //for networking. needed in ANY activity that makes requests.
     PokeyMaker p;
@@ -25,13 +26,16 @@ public class friendsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends);
         fileManager = new FileMan(this);
+
         //added stuff for networking. Needed in ANY activity that makes requests.
         p = new PokeyMaker();
         queue = Volley.newRequestQueue(this);
+
+        //updates on open of friends list
         update();
     }
 
-    //Called when poke is pressed
+    //Called when poke is pressed with test UUID
     //Adds a poke request and sets up a listener.
     //The result for this should just be a confirmation message.
     public void poke(View v) {
@@ -86,11 +90,13 @@ public class friendsActivity extends AppCompatActivity {
         }
     }
 
+    //starts add friend activity
     public void addFriend(View v) {
         Intent intent = new Intent(this, addFriendActivity.class);
         startActivity(intent);
     }
 
+    //Called when poke is pressed with test UUID
     public void removeFriend(View v) {
         final String args[] = {"friends/delete", fileManager.getUUID(), "0e33e1c6-d0a3-4155-941e-fd1d357c458d"};
         Thread wait; //calls a method once p has a result

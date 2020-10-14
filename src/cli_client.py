@@ -114,7 +114,6 @@ if __name__ == '__main__':
         elif uin == 'd':
             frienduuid = input('Friend> ')
             client.delete_friend(frienduuid)
-            print('successful')
         elif uin == 'e':
             with open(input('Path> '), 'w') as f:
                 f.write(json.dumps({'uuid': str(client.uuid), 'friends': [str(u) for u in client.friends]}))

@@ -30,7 +30,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 
-public class qrGenActivity extends AppCompatActivity{
+public class addFriendActivity extends AppCompatActivity{
 
     FileMan fileManager;
     private Bitmap loadedBmp = null;
@@ -56,6 +56,7 @@ public class qrGenActivity extends AppCompatActivity{
         qrView.setImageBitmap(loadedBmp);
     }
 
+
     //new qr code creation using zxing
     private Bitmap createQrCodeFromUUID(String UUID){
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
@@ -71,7 +72,12 @@ public class qrGenActivity extends AppCompatActivity{
     }
     
     public void leaveQR(View v){
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, friendsActivity.class);
+        startActivity(intent);
+    }
+
+    public void scanQR(View v){
+        Intent intent = new Intent(this, scanActivity.class);
         startActivity(intent);
     }
 }

@@ -39,22 +39,17 @@ public class MainActivity extends AppCompatActivity {
         queue = Volley.newRequestQueue(this);
     }
 
-    //Called when QR is pressed
-    //switch to qr activity
-    public void openQR(View v) {
-        Intent i = new Intent(this, qrGenActivity.class);
-        startActivity(i);
-    }
-
-    public void scan(View v) {
-        Intent i = new Intent(this, scanActivity.class);
-        startActivity(i);
-    }
-
     //Called when register is pressed
     //for networking: switch to register activity
     public void register(View v) {
         Intent i = new Intent(this, RegisterActivity.class);
+        startActivity(i);
+    }
+
+    //Called when QR is pressed
+    //switch to qr activity
+    public void openFriends(View v) {
+        Intent i = new Intent(this, friendsActivity.class);
         startActivity(i);
     }
 
@@ -69,109 +64,6 @@ public class MainActivity extends AppCompatActivity {
         if(fileManager.getUUID() != "") {
             //create pokey thread to register
             Thread t = p.newThread(new Pokey(queue, p, "https://poke.zachlef.in/poke/poll", args));
-            t.start();
-            //create thread to wait for result
-            wait = new Thread(new Runnable(){
-                @Override
-                public void run() {
-                    String result;
-                    while(true) {
-                        result = p.getResult();
-                        if(result != null) break;
-                    }
-                    //IMPORTANT: This is where behavior for requests should be implemented; call a function with "result" as argument.
-                    placeholderResult(result);
-                }
-            });
-            wait.start();
-        }
-    }
-
-    //Called when poke is pressed
-    //Adds a poke request and sets up a listener.
-    //The result for this should just be a confirmation message.
-    public void poke(View v) {
-        //You need a target UUID for this. Sending it to user "Friend" right now (check admin)
-        final String args[] = {"poke", fileManager.getUUID(), "0e33e1c6-d0a3-4155-941e-fd1d357c458d", "message_here"};
-        Thread wait; //calls a method once p has a result
-        if(fileManager.getUUID() != "") {
-            //create pokey thread to register
-            Thread t = p.newThread(new Pokey(queue, p, "https://poke.zachlef.in/poke/poke", args));
-            t.start();
-            //create thread to wait for result
-            wait = new Thread(new Runnable(){
-                @Override
-                public void run() {
-                    String result;
-                    while(true) {
-                        result = p.getResult();
-                        if(result != null) break;
-                    }
-                    //IMPORTANT: This is where behavior for requests should be implemented; call a function with "result" as argument.
-                    placeholderResult(result);
-                }
-            });
-            wait.start();
-        }
-    }
-
-    //Called when update is pressed
-    //Adds an update request and sets up a listener.
-    //Similar result to poll; JSON array string with {"name": "Jake", "friends": ["uuid","uuid"]}
-    public void update(View v) {
-        final String args[] = {"update", fileManager.getUUID()};
-        Thread wait; //calls a method once p has a result
-        if(fileManager.getUUID() != "") {
-            //create pokey thread to register
-            Thread t = p.newThread(new Pokey(queue, p, "https://poke.zachlef.in/poke/update", args));
-            t.start();
-            //create thread to wait for result
-            wait = new Thread(new Runnable(){
-                @Override
-                public void run() {
-                    String result;
-                    while(true) {
-                        result = p.getResult();
-                        if(result != null) break;
-                    }
-                    //IMPORTANT: This is where behavior for requests should be implemented; call a function with "result" as argument.
-                    placeholderResult(result);
-                }
-            });
-            wait.start();
-        }
-    }
-
-    public void addFriend(View v) {
-        final String args[] = {"friends/add", fileManager.getUUID(), "0e33e1c6-d0a3-4155-941e-fd1d357c458d"};
-        Thread wait; //calls a method once p has a result
-        if(fileManager.getUUID() != "") {
-            //create pokey thread to register
-            Thread t = p.newThread(new Pokey(queue, p, "https://poke.zachlef.in/poke/friends/add", args));
-            t.start();
-            //create thread to wait for result
-            wait = new Thread(new Runnable(){
-                @Override
-                public void run() {
-                    String result;
-                    while(true) {
-                        result = p.getResult();
-                        if(result != null) break;
-                    }
-                    //IMPORTANT: This is where behavior for requests should be implemented; call a function with "result" as argument.
-                    placeholderResult(result);
-                }
-            });
-            wait.start();
-        }
-    }
-
-    public void removeFriend(View v) {
-        final String args[] = {"friends/delete", fileManager.getUUID(), "0e33e1c6-d0a3-4155-941e-fd1d357c458d"};
-        Thread wait; //calls a method once p has a result
-        if(fileManager.getUUID() != "") {
-            //create pokey thread to register
-            Thread t = p.newThread(new Pokey(queue, p, "https://poke.zachlef.in/poke/friends/delete", args));
             t.start();
             //create thread to wait for result
             wait = new Thread(new Runnable(){

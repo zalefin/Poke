@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'pokeserver.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'pokedata',
         'USER': 'admin',
         'PASSWORD': '4c3db8a883b2ec61f2330e45ec1d9c9c',

@@ -38,6 +38,15 @@ class Client:
         else:
             print('add failed')
 
+    def delete_friend(self, target_uuid: UUID):
+        r = requests.post('{}poke/friends/delete'.format(self._get_base_url()),
+                data={'user': str(self.uuid), 'target': str(target_uuid)})
+        c = r.content
+        if c == b'success':
+            self.friends.remove(target_uuid)
+        else:
+            print('delete failed')
+
     def print_friends(self):
         if len(self.friends):
             for fr in self.friends:
@@ -103,7 +112,9 @@ if __name__ == '__main__':
             except:
                 print('Invalid UUID')
         elif uin == 'd':
-            print('no implement')
+            frienduuid = input('Friend> ')
+            client.delete_friend(frienduuid)
+            print('successful')
         elif uin == 'e':
             with open(input('Path> '), 'w') as f:
                 f.write(json.dumps({'uuid': str(client.uuid), 'friends': [str(u) for u in client.friends]}))

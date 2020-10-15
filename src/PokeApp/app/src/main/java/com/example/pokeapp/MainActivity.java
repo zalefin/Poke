@@ -19,11 +19,11 @@ import com.android.volley.toolbox.Volley;
 
 public class MainActivity extends AppCompatActivity {
 
-    NotiMan notificationManager;
-    FileMan fileManager;
+    private NotiMan notificationManager;
+    private FileMan fileManager;
     //for networking. needed in ANY activity that makes requests.
-    PokeyMaker p;
-    RequestQueue queue;
+    private PokeyMaker p;
+    private RequestQueue queue;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override

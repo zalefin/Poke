@@ -20,7 +20,7 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 public class addFriendActivity extends AppCompatActivity{
 
-    FileMan fileManager;
+    private FileMan fileManager;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override

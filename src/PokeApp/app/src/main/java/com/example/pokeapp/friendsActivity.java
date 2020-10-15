@@ -15,10 +15,10 @@ import com.android.volley.toolbox.Volley;
 public class friendsActivity extends AppCompatActivity {
 
     //for getting user data
-    FileMan fileManager;
+    private FileMan fileManager;
     //for networking. needed in ANY activity that makes requests.
-    PokeyMaker p;
-    RequestQueue queue;
+    private PokeyMaker p;
+    private RequestQueue queue;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override

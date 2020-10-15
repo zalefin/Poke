@@ -59,154 +59,48 @@ public class Pokey implements Runnable{
     }
 
     void addRegiRequest(String name) {
-        final String regiName = name;
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.i("VOLLEY", response);
-                source.setResult(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("VOLLEY", error.toString());
-            }
-        }) {
-            @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("name", regiName);
-                return params;
-            }
-        };
+        final Map<String, String> params = new HashMap<>();
+        params.put("name", name);
+        StringRequest stringRequest = PokeStringRequestFactory.buildPokeStringRequest(source, url, params);
         queue.add(stringRequest);
     }
 
     void addPollRequest(String user_UUID) {
-        final String userID = user_UUID;
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.i("VOLLEY", response);
-                source.setResult(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("VOLLEY", error.toString());
-            }
-        }) {
-            @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("user", userID);
-                return params;
-            }
-        };
+        final Map<String, String> params = new HashMap<>();
+        params.put("user", user_UUID);
+        StringRequest stringRequest =  PokeStringRequestFactory.buildPokeStringRequest(source, url, params);
         queue.add(stringRequest);
     }
 
-    void addPokeRequest(String user_UUID, String targ_UUID, String content) {
-        final String userID = user_UUID;
-        final String targetID = targ_UUID;
-        final String payload = content;
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.i("VOLLEY", response);
-                source.setResult(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("VOLLEY", error.toString());
-            }
-        }) {
-            @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("user", userID);
-                params.put("target", targetID);
-                params.put("payload", payload);
-                return params;
-            }
-        };
+    void addPokeRequest(String user_UUID, String targ_UUID, String payload) {
+        final Map<String, String> params = new HashMap<>();
+        params.put("user", user_UUID);
+        params.put("target", targ_UUID);
+        params.put("payload", payload);
+        StringRequest stringRequest =  PokeStringRequestFactory.buildPokeStringRequest(source, url, params);
         queue.add(stringRequest);
     }
 
     void addUpdateRequest(String user_UUID) {
-        final String userID = user_UUID;
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.i("VOLLEY", response);
-                source.setResult(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("VOLLEY", error.toString());
-            }
-        }) {
-            @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("user", userID);
-                return params;
-            }
-        };
+        final Map<String, String> params = new HashMap<>();
+        params.put("user", user_UUID);
+        StringRequest stringRequest =  PokeStringRequestFactory.buildPokeStringRequest(source, url, params);
         queue.add(stringRequest);
     }
 
     void addAddFriendRequest(String user_UUID, String target_UUID) {
-        final String userID = user_UUID;
-        final String targetID = target_UUID;
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.i("VOLLEY", response);
-                source.setResult(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("VOLLEY", error.toString());
-            }
-        }) {
-            @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("user", userID);
-                params.put("target", targetID);
-                return params;
-            }
-        };
+        final Map<String, String> params = new HashMap<>();
+        params.put("user", user_UUID);
+        params.put("target", target_UUID);
+        StringRequest stringRequest =  PokeStringRequestFactory.buildPokeStringRequest(source, url, params);
         queue.add(stringRequest);
     }
 
     void addRemoveFriendRequest(String user_UUID, String target_UUID) {
-        final String userID = user_UUID;
-        final String targetID = target_UUID;
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.i("VOLLEY", response);
-                source.setResult(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("VOLLEY", error.toString());
-            }
-        }) {
-            @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("user", userID);
-                params.put("target", targetID);
-                return params;
-            }
-        };
+        final Map<String, String> params = new HashMap<>();
+        params.put("user", user_UUID);
+        params.put("target", target_UUID);
+        StringRequest stringRequest =  PokeStringRequestFactory.buildPokeStringRequest(source, url, params);
         queue.add(stringRequest);
     }
 };

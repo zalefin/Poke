@@ -61,14 +61,14 @@ public class Pokey implements Runnable{
     void addRegiRequest(String name) {
         final Map<String, String> params = new HashMap<>();
         params.put("name", name);
-        StringRequest stringRequest = PokeStringRequestFactory.buildPokeStringRequest(url, params);
+        StringRequest stringRequest = PokeStringRequestFactory.buildPokeStringRequest(source, url, params);
         queue.add(stringRequest);
     }
 
     void addPollRequest(String user_UUID) {
         final Map<String, String> params = new HashMap<>();
         params.put("user", user_UUID);
-        StringRequest stringRequest =  PokeStringRequestFactory.buildPokeStringRequest(url, params);
+        StringRequest stringRequest =  PokeStringRequestFactory.buildPokeStringRequest(source, url, params);
         queue.add(stringRequest);
     }
 
@@ -77,14 +77,14 @@ public class Pokey implements Runnable{
         params.put("user", user_UUID);
         params.put("target", targ_UUID);
         params.put("payload", payload);
-        StringRequest stringRequest =  PokeStringRequestFactory.buildPokeStringRequest(url, params);
+        StringRequest stringRequest =  PokeStringRequestFactory.buildPokeStringRequest(source, url, params);
         queue.add(stringRequest);
     }
 
     void addUpdateRequest(String user_UUID) {
         final Map<String, String> params = new HashMap<>();
         params.put("user", user_UUID);
-        StringRequest stringRequest =  PokeStringRequestFactory.buildPokeStringRequest(url, params);
+        StringRequest stringRequest =  PokeStringRequestFactory.buildPokeStringRequest(source, url, params);
         queue.add(stringRequest);
     }
 
@@ -92,7 +92,7 @@ public class Pokey implements Runnable{
         final Map<String, String> params = new HashMap<>();
         params.put("user", user_UUID);
         params.put("target", target_UUID);
-        StringRequest stringRequest =  PokeStringRequestFactory.buildPokeStringRequest(url, params);
+        StringRequest stringRequest =  PokeStringRequestFactory.buildPokeStringRequest(source, url, params);
         queue.add(stringRequest);
     }
 
@@ -100,7 +100,7 @@ public class Pokey implements Runnable{
         final Map<String, String> params = new HashMap<>();
         params.put("user", user_UUID);
         params.put("target", target_UUID);
-        StringRequest stringRequest =  PokeStringRequestFactory.buildPokeStringRequest(url, params);
+        StringRequest stringRequest =  PokeStringRequestFactory.buildPokeStringRequest(source, url, params);
         queue.add(stringRequest);
     }
 };

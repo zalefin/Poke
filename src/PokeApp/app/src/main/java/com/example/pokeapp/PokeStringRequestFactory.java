@@ -14,12 +14,12 @@ import java.util.Map;
 
 public class PokeStringRequestFactory {
 
-    public static StringRequest buildPokeStringRequest(String url, final Map<String, String> params) {
+    public static StringRequest buildPokeStringRequest(final PokeyMaker source, String url, final Map<String, String> params) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.i("VOLLEY", response);
-                MainActivity.p.setResult(response);
+                source.setResult(response);
             }
         }, new Response.ErrorListener() {
             @Override

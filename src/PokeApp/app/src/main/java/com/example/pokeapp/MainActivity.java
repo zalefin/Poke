@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     NotiMan notificationManager;
     FileMan fileManager;
     //for networking. needed in ANY activity that makes requests.
-    PokeyMaker p;
+    public static PokeyMaker p;
     RequestQueue queue;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

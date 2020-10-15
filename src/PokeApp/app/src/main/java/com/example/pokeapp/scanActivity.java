@@ -23,10 +23,10 @@ public class scanActivity extends AppCompatActivity {
     //qr code scanner object
     private IntentIntegrator qrScan;
     //PokeyMaker for network
-    PokeyMaker p;
-    RequestQueue queue;
+    private PokeyMaker p;
+    private RequestQueue queue;
     //fileManager for reading user uuid
-    FileMan fileManager;
+    private FileMan fileManager;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override

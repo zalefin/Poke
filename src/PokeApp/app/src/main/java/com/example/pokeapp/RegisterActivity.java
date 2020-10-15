@@ -14,9 +14,9 @@ import com.android.volley.toolbox.Volley;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    RequestQueue queue;
-    PokeyMaker p;
-    FileMan fileManager;
+    private RequestQueue queue;
+    private PokeyMaker p;
+    private FileMan fileManager;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override

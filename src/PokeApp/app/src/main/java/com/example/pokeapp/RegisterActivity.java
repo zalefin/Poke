@@ -58,7 +58,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void returnToMain() {
-        Intent i = new Intent(this, MainActivity.class);
-        startActivity(i);
+        this.finish();
     }
 }

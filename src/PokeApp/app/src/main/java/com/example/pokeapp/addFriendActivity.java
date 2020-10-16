@@ -60,8 +60,7 @@ public class addFriendActivity extends AppCompatActivity{
     }
     
     public void leaveQR(View v){
-        Intent intent = new Intent(this, friendsActivity.class);
-        startActivity(intent);
+        this.finish();
     }
 
     public void scanQR(View v){

@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         if(fileManager.getUUID().equals("")){
+            this.finish();
             Intent i = new Intent(this, RegisterActivity.class);
             startActivity(i);
         }else{

@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,6 +56,11 @@ public class RegisterActivity extends AppCompatActivity {
             wait.start();
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, "You must register!", Toast.LENGTH_SHORT).show();
     }
 
     private void returnToMain() {

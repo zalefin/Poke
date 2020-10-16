@@ -1,6 +1,7 @@
 package com.example.pokeapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,8 +20,8 @@ import com.android.volley.toolbox.Volley;
 //send request to http://zachlef.in/register/name=wewlad, returns UUID
 
 public class MainActivity extends AppCompatActivity {
-
-    public boolean hasRegistered = false;
+    private boolean hasRegistered;
+    private boolean firstStart;
     private NotiMan notificationManager;
     private FileMan fileManager;
     //for networking. needed in ANY activity that makes requests.
@@ -40,28 +41,27 @@ public class MainActivity extends AppCompatActivity {
         p = new PokeyMaker();
         queue = Volley.newRequestQueue(this);
 
-        //starts register only if there is no user data file
-        if(fileManager.getUUID() == null){
-            hasRegistered = false;
-        }else{
-            hasRegistered = true;
+
+        if(fileManager.getUUID().equals("")){
+            Intent i = new Intent(this, RegisterActivity.class);
+            startActivity(i);
         }
 
-        tryRegister();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        updateFriends();
-    }
-
-    private void tryRegister(){
-        if(!hasRegistered) {
-            Intent i = new Intent(this, RegisterActivity.class);
-            startActivity(i);
+        hasRegistered = false;
+        if(fileManager.getUUID().equals("")){
+            Log.i("tag", "UUID found");
+            hasRegistered = true;
+            updateFriends();
+        }else{
+            Log.i("tag", "UUID not found");
         }
     }
+
 
     //#####UNIMPLEMENTED ENDPOINTS START HERE#####
 
@@ -97,6 +97,10 @@ public class MainActivity extends AppCompatActivity {
     //Adds a poke request and sets up a listener.
     //The result for this should just be a confirmation message.
     public void poke(View v) {
+        if(!hasRegistered) {
+            Toast.makeText(this, "User isn't registered.", Toast.LENGTH_LONG).show();
+            return;
+        }
         //You need a target UUID for this. Sending it to user "Friend" right now (check admin)
         final String args[] = {"poke", fileManager.getUUID(), "0e33e1c6-d0a3-4155-941e-fd1d357c458d", "message_here"};
         Thread wait; //calls a method once p has a result
@@ -125,6 +129,10 @@ public class MainActivity extends AppCompatActivity {
     //Adds an update request and sets up a listener.
     //Similar result to poll; JSON array string with {"name": "Jake", "friends": ["uuid","uuid"]}
     public void updateFriends() {
+        if(!hasRegistered) {
+            Toast.makeText(this, "User isn't registered.", Toast.LENGTH_LONG).show();
+            return;
+        }
         final String args[] = {"update", fileManager.getUUID()};
         Thread wait; //calls a method once p has a result
         if(!fileManager.getUUID().equals("")) {
@@ -150,13 +158,20 @@ public class MainActivity extends AppCompatActivity {
 
     //starts add friend activity
     public void addFriend(View v) {
-
-            Intent intent = new Intent(this, addFriendActivity.class);
-            startActivity(intent);
+        if(!hasRegistered) {
+            Toast.makeText(this, "User isn't registered.", Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent intent = new Intent(this, addFriendActivity.class);
+        startActivity(intent);
     }
 
     //Called when poke is pressed with test UUID
     public void removeFriend(View v) {
+        if(!hasRegistered) {
+            Toast.makeText(this, "User isn't registered.", Toast.LENGTH_LONG).show();
+            return;
+        }
         final String args[] = {"friends/delete", fileManager.getUUID(), "0e33e1c6-d0a3-4155-941e-fd1d357c458d"};
         Thread wait; //calls a method once p has a result
         if(!fileManager.getUUID().equals("")) {

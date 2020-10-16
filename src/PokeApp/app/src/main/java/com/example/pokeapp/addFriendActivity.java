@@ -26,6 +26,7 @@ public class addFriendActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_add_friend);
         //finds image view and sets image to generated bitmap
         ImageView qrView = (ImageView) findViewById(R.id.qrView);
@@ -35,12 +36,13 @@ public class addFriendActivity extends AppCompatActivity{
         //If no valid UUID exists, display no valid UUID
         TextView noValidUUID = (TextView) findViewById(R.id.noQrCode);
         TextView uuidText = (TextView) findViewById(R.id.uuidViewQR);
-        //gets UUID from fileman
-        uuidText.setText(fileManager.getName() + "\n" + fileManager.getUUID());
         if(loadedBmp == null) {
             noValidUUID.setText("No Valid UUID Loaded");
+        }else{
+            //gets UUID from fileman
+            uuidText.setText(fileManager.getName() + "\n" + fileManager.getUUID());
+            qrView.setImageBitmap(loadedBmp);
         }
-        qrView.setImageBitmap(loadedBmp);
     }
 
 

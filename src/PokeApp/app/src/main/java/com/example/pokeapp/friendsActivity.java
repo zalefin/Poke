@@ -42,7 +42,7 @@ public class friendsActivity extends AppCompatActivity {
         //You need a target UUID for this. Sending it to user "Friend" right now (check admin)
         final String args[] = {"poke", fileManager.getUUID(), "0e33e1c6-d0a3-4155-941e-fd1d357c458d", "message_here"};
         Thread wait; //calls a method once p has a result
-        if(fileManager.getUUID() != "") {
+        if(!fileManager.getUUID().equals("")) {
             //create pokey thread to register
             Thread t = p.newThread(new Pokey(queue, p, "https://poke.zachlef.in/poke/poke", args));
             t.start();
@@ -69,7 +69,7 @@ public class friendsActivity extends AppCompatActivity {
     public void update() {
         final String args[] = {"update", fileManager.getUUID()};
         Thread wait; //calls a method once p has a result
-        if(fileManager.getUUID() != "") {
+        if(!fileManager.getUUID().equals("")) {
             //create pokey thread to register
             Thread t = p.newThread(new Pokey(queue, p, "https://poke.zachlef.in/poke/update", args));
             t.start();
@@ -100,7 +100,7 @@ public class friendsActivity extends AppCompatActivity {
     public void removeFriend(View v) {
         final String args[] = {"friends/delete", fileManager.getUUID(), "0e33e1c6-d0a3-4155-941e-fd1d357c458d"};
         Thread wait; //calls a method once p has a result
-        if(fileManager.getUUID() != "") {
+        if(!fileManager.getUUID().equals("")) {
             //create pokey thread to register
             Thread t = p.newThread(new Pokey(queue, p, "https://poke.zachlef.in/poke/friends/delete", args));
             t.start();
@@ -127,7 +127,6 @@ public class friendsActivity extends AppCompatActivity {
     }
 
     public void leaveFriends(View v){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        this.finish();
     }
 }

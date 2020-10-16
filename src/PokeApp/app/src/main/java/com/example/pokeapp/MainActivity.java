@@ -53,14 +53,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    //Called when showUUID is pressed
-    //for networking: loads UUID from file
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void showUUID(View v) {
-        TextView text = (TextView)findViewById(R.id.uuidView);
-        text.setText(fileManager.getName() + "\n" + fileManager.getUUID());
-    }
-
     /*
     =====NOTIFICATION BRANCH=====
     */
@@ -78,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     public void poll(View v) {
         final String args[] = {"poll", fileManager.getUUID()};
         Thread wait; //calls a method once p has a result
-        if(fileManager.getUUID() != "") {
+        if(!fileManager.getUUID().equals("")) {
             //create pokey thread to register
             Thread t = p.newThread(new Pokey(queue, p, "https://poke.zachlef.in/poke/poll", args));
             t.start();

@@ -63,14 +63,12 @@ public class scanActivity extends AppCompatActivity {
             if (result.getContents() == null) {
                 //goes back to friends List
                 Toast.makeText(this, "Result Not Found", Toast.LENGTH_LONG).show();
-                Intent i = new Intent(this, friendsActivity.class);
-                startActivity(i);
+                this.finish();
             } else {
                 //logs scanned UUID and sends request for add friend
                 Log.i("tag", result.getContents());
                 addFriendFromUUID(result.getContents());
-                Intent i = new Intent(this, addFriendActivity.class);
-                startActivity(i);
+                this.finish();
             }
         }
     }
@@ -79,7 +77,7 @@ public class scanActivity extends AppCompatActivity {
     public void addFriendFromUUID(String UUID) {
         final String args[] = {"friends/add", fileManager.getUUID(), UUID};
         Thread wait; //calls a method once p has a result
-        if(fileManager.getUUID() != "") {
+        if(!fileManager.getUUID().equals("")) {
             //create pokey thread to register
             Thread t = p.newThread(new Pokey(queue, p, "https://poke.zachlef.in/poke/friends/add", args));
             t.start();

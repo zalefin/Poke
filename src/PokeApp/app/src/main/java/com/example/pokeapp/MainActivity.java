@@ -5,13 +5,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 
 //Register request
 //type in name, ex "wewlad"
@@ -21,9 +18,6 @@ public class MainActivity extends AppCompatActivity {
 
     private NotiMan notificationManager;
     private FileMan fileManager;
-    //for networking. needed in ANY activity that makes requests.
-    private PokeyMaker p;
-    private RequestQueue queue;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -35,8 +29,7 @@ public class MainActivity extends AppCompatActivity {
         notificationManager = new NotiMan(this);
         fileManager = new FileMan(this);
         //added stuff for networking. Needed in ANY activity that makes requests.
-        p = new PokeyMaker();
-        queue = Volley.newRequestQueue(this);
+        RequestManager.init(this);
     }
 
     //Called when register is pressed
@@ -72,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         Thread wait; //calls a method once p has a result
         if(!fileManager.getUUID().equals("")) {
             //create pokey thread to register
-            Thread t = p.newThread(new Pokey(queue, p, "https://poke.zachlef.in/poke/poll", args));
+            Thread t = RequestManager.requestThreadFactory.newThread(new RequestTask("https://poke.zachlef.in/poke/poll", args));
             t.start();
             //create thread to wait for result
             wait = new Thread(new Runnable(){
@@ -80,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     String result;
                     while(true) {
-                        result = p.getResult();
+                        result = RequestManager.requestThreadFactory.getResult();
                         if(result != null) break;
                     }
                     //IMPORTANT: This is where behavior for requests should be implemented; call a function with "result" as argument.

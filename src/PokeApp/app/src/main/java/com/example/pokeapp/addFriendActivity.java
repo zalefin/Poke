@@ -58,7 +58,7 @@ public class addFriendActivity extends AppCompatActivity{
         }
         return null;
     }
-    
+
     public void leaveQR(View v){
         this.finish();
     }

@@ -13,8 +13,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -22,9 +20,6 @@ public class scanActivity extends AppCompatActivity {
 
     //qr code scanner object
     private IntentIntegrator qrScan;
-    //PokeyMaker for network
-    private PokeyMaker p;
-    private RequestQueue queue;
     //fileManager for reading user uuid
     private FileMan fileManager;
 
@@ -35,8 +30,6 @@ public class scanActivity extends AppCompatActivity {
         setContentView(R.layout.activity_scan);
 
         //added stuff for networking. Needed in ANY activity that makes requests.
-        p = new PokeyMaker();
-        queue = Volley.newRequestQueue(this);
 
         fileManager = new FileMan(this);
 
@@ -79,7 +72,7 @@ public class scanActivity extends AppCompatActivity {
         Thread wait; //calls a method once p has a result
         if(!fileManager.getUUID().equals("")) {
             //create pokey thread to register
-            Thread t = p.newThread(new Pokey(queue, p, "https://poke.zachlef.in/poke/friends/add", args));
+            Thread t = RequestManager.requestThreadFactory.newThread(new RequestTask("https://poke.zachlef.in/poke/friends/add", args));
             t.start();
             //create thread to wait for result
             wait = new Thread(new Runnable(){
@@ -87,7 +80,7 @@ public class scanActivity extends AppCompatActivity {
                 public void run() {
                     String result;
                     while(true) {
-                        result = p.getResult();
+                        result = RequestManager.requestThreadFactory.getResult();
                         if(result != null) break;
                     }
                     //IMPORTANT: This is where behavior for requests should be implemented; call a function with "result" as argument.

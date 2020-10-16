@@ -1,9 +1,20 @@
 package com.example.pokeapp;
 
+import android.content.Context;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+
 import java.util.concurrent.ThreadFactory;
 
-public class  PokeyMaker implements ThreadFactory {
+public class RequestThreadFactory implements ThreadFactory {
+    private RequestQueue queue;
     public String prevResult = "";
+
+    public RequestThreadFactory(Context context) {
+        queue = Volley.newRequestQueue(context);
+    }
+
     public Thread newThread(Runnable r) {
         return new Thread(r);
     }

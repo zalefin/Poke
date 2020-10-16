@@ -2,10 +2,6 @@ package com.example.pokeapp;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.JsonReader;
-import android.util.JsonWriter;
-import android.util.Log;
-import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
@@ -18,7 +14,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 
 public class FileMan {

@@ -10,13 +10,8 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-
 public class RegisterActivity extends AppCompatActivity {
 
-    private RequestQueue queue;
-    private PokeyMaker p;
     private FileMan fileManager;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -25,8 +20,6 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        queue = Volley.newRequestQueue(this); //request queue
-        p = new PokeyMaker(); //basically just a thread factory
         fileManager = new FileMan(this);
     }
 
@@ -37,14 +30,14 @@ public class RegisterActivity extends AppCompatActivity {
         final String args[] = {"register", nameText};
         if(nameText != "") {
             //create pokey thread to register
-            Thread t = p.newThread(new Pokey(queue, p, "https://poke.zachlef.in/poke/register", args));
+            Thread t = RequestManager.requestThreadFactory.newThread(new RequestTask("https://poke.zachlef.in/poke/register", args));
             t.start();
             //create thread to wait for result
             wait = new Thread(new Runnable(){
                 @Override
                 public void run() {
                     while(true) {
-                        regiResult = p.getResult();
+                        regiResult = RequestManager.requestThreadFactory.getResult();
                         if(regiResult != null) break;
                     }
                     fileManager.writeName(args[1]);

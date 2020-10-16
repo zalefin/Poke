@@ -21,7 +21,6 @@ import com.android.volley.toolbox.Volley;
 
 public class MainActivity extends AppCompatActivity {
     private boolean hasRegistered;
-    private boolean firstStart;
     private NotiMan notificationManager;
     private FileMan fileManager;
     //for networking. needed in ANY activity that makes requests.
@@ -45,21 +44,19 @@ public class MainActivity extends AppCompatActivity {
         if(fileManager.getUUID().equals("")){
             Intent i = new Intent(this, RegisterActivity.class);
             startActivity(i);
+        }else{
+            hasRegistered = true;
         }
+
+        TextView userUUID = (TextView)findViewById(R.id.uuidView);
+        userUUID.setText(fileManager.getName() + "\n" + fileManager.getUUID());
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        hasRegistered = false;
-        if(fileManager.getUUID().equals("")){
-            Log.i("tag", "UUID found");
-            hasRegistered = true;
-            updateFriends();
-        }else{
-            Log.i("tag", "UUID not found");
-        }
+        updateFriends();
     }
 
 

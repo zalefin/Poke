@@ -1,9 +1,11 @@
 package com.example.pokeapp;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,7 +51,14 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, "You must register!", Toast.LENGTH_SHORT).show();
+    }
+
     private void returnToMain() {
         this.finish();
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
     }
 }

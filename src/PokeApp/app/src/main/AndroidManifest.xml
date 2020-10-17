@@ -16,9 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="false">
-        <activity android:name=".friendsActivity"
-            android:screenOrientation="portrait"
-            tools:replace="screenOrientation" />
         <activity
             android:name=".scanActivity"
             android:screenOrientation="portrait"

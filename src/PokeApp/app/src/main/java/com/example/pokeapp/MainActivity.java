@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         }else{
             hasRegistered = true;
         }
-
+        Log.i("volley", "created main");
         TextView userUUID = (TextView)findViewById(R.id.uuidView);
         userUUID.setText(fileManager.getName() + "\n" + fileManager.getUUID());
 

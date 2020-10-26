@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -36,7 +37,7 @@ public class scanActivity extends AppCompatActivity {
         //checks if device has camera and camera permissions, if not will exit activity
         //need to add ask permissions
         if(!checkCameraHardware(this) && checkCameraPermission()){
-            Log.i("tag","No camera found.");
+            Toast.makeText(this, "No Camera Found", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
@@ -84,7 +85,7 @@ public class scanActivity extends AppCompatActivity {
                         if(result != null) break;
                     }
                     //IMPORTANT: This is where behavior for requests should be implemented; call a function with "result" as argument.
-                    placeholderResult(result);
+                    confirmResult(result);
                 }
             });
             wait.start();
@@ -92,8 +93,12 @@ public class scanActivity extends AppCompatActivity {
     }
 
     //placeholder function. replace with your endpoint's needs.
-    public void placeholderResult(String r) {
-        Log.d("RESULT", r);
+    public void confirmResult(String r) {
+        Looper.prepare();
+        Log.i("volley", r);
+        if(r.substring(0,7).equals("Already")){
+            Toast.makeText(this, "Already Friends!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     //checks if app has given camera permission

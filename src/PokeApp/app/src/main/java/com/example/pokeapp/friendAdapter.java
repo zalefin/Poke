@@ -12,11 +12,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class friendAdapter extends BaseAdapter implements ListAdapter {
+public class FriendAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<String> friendList;
     private Context context;
 
-    public friendAdapter(ArrayList<String> friendList, Context context) {
+    public FriendAdapter(ArrayList<String> friendList, Context context) {
         this.friendList = friendList;
         this.context = context;
     }

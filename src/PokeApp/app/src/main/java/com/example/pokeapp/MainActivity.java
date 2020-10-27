@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<String> friendsArray;
-    private friendAdapter adapter;
+    private FriendAdapter adapter;
     private boolean hasRegistered;
     private NotiMan notificationManager;
     private FileMan fileManager;
@@ -62,12 +62,12 @@ public class MainActivity extends AppCompatActivity {
 
         //set up list view with friendAdapter and click listeners
         friendsArray = new ArrayList<String>();
-        adapter = new friendAdapter(friendsArray, this);
+        adapter = new FriendAdapter(friendsArray, this);
         ListView listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(friendClickedHandler);
         listView.setOnItemLongClickListener(friendLongClickHandler);
-    }
+    } 
 
     @Override
     protected void onResume() {
@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "User isn't registered.", Toast.LENGTH_LONG).show();
             return;
         }
-        Intent intent = new Intent(this, addFriendActivity.class);
+        Intent intent = new Intent(this, AddFriendActivity.class);
         startActivity(intent);
     }
 }

@@ -17,7 +17,7 @@ import androidx.core.content.ContextCompat;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class scanActivity extends AppCompatActivity {
+public class ScanActivity extends AppCompatActivity {
 
     //qr code scanner object
     private IntentIntegrator qrScan;

@@ -18,7 +18,7 @@ import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 
-public class addFriendActivity extends AppCompatActivity{
+public class AddFriendActivity extends AppCompatActivity{
 
     private FileMan fileManager;
 
@@ -66,7 +66,7 @@ public class addFriendActivity extends AppCompatActivity{
     }
 
     public void scanQR(View v){
-        Intent intent = new Intent(this, scanActivity.class);
+        Intent intent = new Intent(this, ScanActivity.class);
         startActivity(intent);
     }
 }

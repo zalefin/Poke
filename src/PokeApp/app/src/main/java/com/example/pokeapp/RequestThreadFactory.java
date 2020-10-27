@@ -11,10 +11,6 @@ public class RequestThreadFactory implements ThreadFactory {
     private RequestQueue queue;
     public String prevResult = "";
 
-    public RequestThreadFactory(Context context) {
-        queue = Volley.newRequestQueue(context);
-    }
-
     public Thread newThread(Runnable r) {
         return new Thread(r);
     }

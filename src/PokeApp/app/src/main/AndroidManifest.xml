@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="false">
         <activity
-            android:name=".scanActivity"
+            android:name=".ScanActivity"
             android:screenOrientation="portrait"
             tools:replace="screenOrientation" />
         <activity
@@ -29,7 +29,7 @@
             android:screenOrientation="portrait"
             tools:replace="screenOrientation" />
         <activity
-            android:name=".addFriendActivity"
+            android:name=".AddFriendActivity"
             android:screenOrientation="portrait"
             tools:replace="screenOrientation" />
         <activity

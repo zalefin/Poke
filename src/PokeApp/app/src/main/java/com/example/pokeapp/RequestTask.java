@@ -7,6 +7,7 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public class RequestTask implements Runnable{
     private String url;
     private String[] args;

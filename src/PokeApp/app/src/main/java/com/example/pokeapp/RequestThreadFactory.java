@@ -1,12 +1,11 @@
 package com.example.pokeapp;
 
-import android.content.Context;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 
 import java.util.concurrent.ThreadFactory;
 
+@Deprecated
 public class RequestThreadFactory implements ThreadFactory {
     private RequestQueue queue;
     public String prevResult = "";

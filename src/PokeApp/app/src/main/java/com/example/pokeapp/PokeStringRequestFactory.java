@@ -9,25 +9,23 @@ import com.android.volley.toolbox.StringRequest;
 
 import java.util.Map;
 
+@Deprecated
 public class PokeStringRequestFactory {
 
-    public static StringRequest buildPokeStringRequest(String url, final Map<String, String> params) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.i("VOLLEY", response);
-                RequestManager.requestThreadFactory.setResult(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("VOLLEY", error.toString());
-            }
-        }) {
-            @Override
-            protected Map<String,String> getParams() {return params;}
-        };
 
-        return stringRequest;
+    public static StringRequest buildPokeStringRequest(String url, final Map<String, String> params) {
+        return null;
+        // StringRequest stringRequest = new StringRequest(Request.Method.POST, url, (response) -> RequestManager.requestThreadFactory.setResult(response), new Response.ErrorListener() {
+
+        //     @Override
+        //     public void onErrorResponse(VolleyError error) {
+        //         Log.e("VOLLEY", error.toString());
+        //     }
+        // }) {
+        //     @Override
+        //     protected Map<String,String> getParams() {return params;}
+        // };
+
+        // return stringRequest;
     }
 }

@@ -78,15 +78,6 @@ public class ScanActivity extends AppCompatActivity {
         });
     }
 
-    //placeholder function. replace with your endpoint's needs.
-    public void confirmResult(String r) {
-        Looper.prepare();
-        Log.i("volley", r);
-        if(r.substring(0,7).equals("Already")){
-            Toast.makeText(this, "Already Friends!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     //checks if app has given camera permission
     private boolean checkCameraPermission(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {

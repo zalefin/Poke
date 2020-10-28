@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //sets uuid text to user uuid
-        Log.i("volley", "created main");
+        Log.i("Main", "created main");
         TextView userUUID = (TextView)findViewById(R.id.uuidView);
         userUUID.setText(fileManager.getName() + "\n" + fileManager.getUUID());
 
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
     //handles list view long click
     private AdapterView.OnItemLongClickListener friendLongClickHandler = new AdapterView.OnItemLongClickListener() {
         public boolean onItemLongClick(AdapterView parent, View v, int position, long id) {
-            Log.i("volley", "long click");
+            Log.i("Main", "long click");
             //shows alert dialog asking if you want to delete friend
             showDeleteFriendDialog(parent.getItemAtPosition(position).toString());
             //prevents short click from also responding
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = 0; i < friends.length(); i++){
             friendsArray.add(friends.getString(i));
-            Log.i("volley", "Added: " + friends.getString(i) );
+            Log.i("Main", "Added: " + friends.getString(i) );
         }
 
         // UI updates must be run on UI thread

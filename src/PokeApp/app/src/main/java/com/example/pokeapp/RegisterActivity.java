@@ -33,27 +33,6 @@ public class RegisterActivity extends AppCompatActivity {
             fileManager.updateFile();
             returnToMain();
         });
-        //final String args[] = {"register", nameText};
-        //if(nameText != "") {
-        //    //create pokey thread to register
-        //    Thread t = RequestManager.requestThreadFactory.newThread(new RequestTask("https://poke.zachlef.in/poke/register", args));
-        //    t.start();
-        //    //create thread to wait for result
-        //    wait = new Thread(new Runnable(){
-        //        @Override
-        //        public void run() {
-        //            while(true) {
-        //                regiResult = RequestManager.requestThreadFactory.getResult();
-        //                if(regiResult != null) break;
-        //            }
-        //            fileManager.writeName(args[1]);
-        //            fileManager.writeUUID(regiResult);
-        //            fileManager.updateFile();
-        //            returnToMain();
-        //        }
-        //    });
-        //    wait.start();
-        //}
 
     }
 

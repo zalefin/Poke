@@ -40,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Init and start sync service intent
+        Intent syncIntent = new Intent(this, SyncService.class);
+        this.startService(syncIntent);
+
         //sdk version is needed for getSystemService
         notificationManager = new NotiMan(this);
         fileManager = new FileMan(this);

@@ -69,27 +69,34 @@ public class ScanActivity extends AppCompatActivity {
 
     //sends network request with scanned UUID
     public void addFriendFromUUID(String UUID) {
-        final String args[] = {"friends/add", fileManager.getUUID(), UUID};
-        Thread wait; //calls a method once p has a result
-        if(!fileManager.getUUID().equals("")) {
-            //create pokey thread to register
-            Thread t = RequestManager.requestThreadFactory.newThread(new RequestTask("https://poke.zachlef.in/poke/friends/add", args));
-            t.start();
-            //create thread to wait for result
-            wait = new Thread(new Runnable(){
-                @Override
-                public void run() {
-                    String result;
-                    while(true) {
-                        result = RequestManager.requestThreadFactory.getResult();
-                        if(result != null) break;
-                    }
-                    //IMPORTANT: This is where behavior for requests should be implemented; call a function with "result" as argument.
-                    confirmResult(result);
-                }
-            });
-            wait.start();
-        }
+        RequestManager.addAddFriendRequest(fileManager.getUUID(), UUID, response -> {
+            if (response.substring(0, 7).equals("Already")) {
+                Toast.makeText(this, "Already Friends!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        //final String args[] = {"friends/add", fileManager.getUUID(), UUID};
+        //Thread wait; //calls a method once p has a result
+        //if(!fileManager.getUUID().equals("")) {
+        //    //create pokey thread to register
+        //    Thread t = RequestManager.requestThreadFactory.newThread(new RequestTask("https://poke.zachlef.in/poke/friends/add", args));
+        //    t.start();
+        //    //create thread to wait for result
+        //    wait = new Thread(new Runnable(){
+        //        @Override
+        //        public void run() {
+        //            String result;
+        //            while(true) {
+        //                result = RequestManager.requestThreadFactory.getResult();
+        //                if(result != null) break;
+        //            }
+        //            //IMPORTANT: This is where behavior for requests should be implemented; call a function with "result" as argument.
+        //            confirmResult(result);
+        //        }
+        //    });
+        //    wait.start();
+        //}
     }
 
     //placeholder function. replace with your endpoint's needs.

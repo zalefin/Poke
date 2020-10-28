@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -71,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(friendClickedHandler);
         listView.setOnItemLongClickListener(friendLongClickHandler);
-    } 
+    }
 
     @Override
     protected void onResume() {
@@ -103,27 +102,31 @@ public class MainActivity extends AppCompatActivity {
     //Adds a poll request and sets up a listener.
     //This one will need you to parse a JSON result from a string. format is: {"pokes": []}
     public void poll(View v) {
-        final String[] args = {"poll", fileManager.getUUID()};
-        Thread wait; //calls a method once p has a result
-        if(!fileManager.getUUID().equals("")) {
-            //create pokey thread to register
-            Thread t = RequestManager.requestThreadFactory.newThread(new RequestTask("https://poke.zachlef.in/poke/poll", args));
-            t.start();
-            //create thread to wait for result
-            wait = new Thread(new Runnable(){
-                @Override
-                public void run() {
-                    String result;
-                    while(true) {
-                        result = RequestManager.requestThreadFactory.getResult();
-                        if(result != null) break;
-                    }
-                    //IMPORTANT: This is where behavior for requests should be implemented; call a function with "result" as argument.
-                    notificationManager.createNotification();
-                }
-            });
-            wait.start();
-        }
+        RequestManager.addPollRequest(fileManager.getUUID(), response -> {
+            Log.d("POLL", "response:" + response);
+            notificationManager.createNotification();
+        });
+        //final String[] args = {"poll", fileManager.getUUID()};
+        //Thread wait; //calls a method once p has a result
+        //if(!fileManager.getUUID().equals("")) {
+        //    //create pokey thread to register
+        //    Thread t = RequestManager.requestThreadFactory.newThread(new RequestTask("https://poke.zachlef.in/poke/poll", args));
+        //    t.start();
+        //    //create thread to wait for result
+        //    wait = new Thread(new Runnable(){
+        //        @Override
+        //        public void run() {
+        //            String result;
+        //            while(true) {
+        //                result = RequestManager.requestThreadFactory.getResult();
+        //                if(result != null) break;
+        //            }
+        //            //IMPORTANT: This is where behavior for requests should be implemented; call a function with "result" as argument.
+        //            notificationManager.createNotification();
+        //        }
+        //    });
+        //    wait.start();
+        //}
     }
 
     //Called when poke is pressed with list item UUID
@@ -134,33 +137,35 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "User isn't registered.", Toast.LENGTH_LONG).show();
             return;
         }
+        RequestManager.addPokeRequest(fileManager.getUUID(), UUID, pokeID, response -> {
+            placeHolderPokeMethod(response);
+        });
         //You need a target UUID for this.
-        final String[] args = {"poke", fileManager.getUUID(), UUID, pokeID};
-        Thread wait; //calls a method once p has a result
-        if(!fileManager.getUUID().equals("")) {
-            //create pokey thread to register
-            Thread t =  RequestManager.requestThreadFactory.newThread(new RequestTask( "https://poke.zachlef.in/poke/poke", args));
-            t.start();
-            //create thread to wait for result
-            wait = new Thread(new Runnable(){
-                @Override
-                public void run() {
-                    String result;
-                    while(true) {
-                        result = RequestManager.requestThreadFactory.getResult();
-                        if(result != null) break;
-                    }
-                    //IMPORTANT: This is where behavior for requests should be implemented; call a function with "result" as argument.
-                    placeHolderPokeMethod(result);
-                }
-            });
-            wait.start();
-        }
+        //final String[] args = {"poke", fileManager.getUUID(), UUID, pokeID};
+        //Thread wait; //calls a method once p has a result
+        //if(!fileManager.getUUID().equals("")) {
+        //    //create pokey thread to register
+        //    Thread t =  RequestManager.requestThreadFactory.newThread(new RequestTask( "https://poke.zachlef.in/poke/poke", args));
+        //    t.start();
+        //    //create thread to wait for result
+        //    wait = new Thread(new Runnable(){
+        //        @Override
+        //        public void run() {
+        //            String result;
+        //            while(true) {
+        //                result = RequestManager.requestThreadFactory.getResult();
+        //                if(result != null) break;
+        //            }
+        //            //IMPORTANT: This is where behavior for requests should be implemented; call a function with "result" as argument.
+        //            placeHolderPokeMethod(result);
+        //        }
+        //    });
+        //    wait.start();
+        //}
     }
 
     public void placeHolderPokeMethod(String r){
-        Looper.prepare();
-        Toast.makeText(this, "Poked!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Poked!" + r, Toast.LENGTH_SHORT).show();
     }
 
     //Called when update is pressed
@@ -171,31 +176,38 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "User isn't registered.", Toast.LENGTH_LONG).show();
             return;
         }
-        final String[] args = {"update", fileManager.getUUID()};
-        Thread wait; //calls a method once p has a result
-        if(!fileManager.getUUID().equals("")) {
-            //create pokey thread to register
-            Thread t =  RequestManager.requestThreadFactory.newThread(new RequestTask( "https://poke.zachlef.in/poke/update", args));
-            t.start();
-            //create thread to wait for result
-            wait = new Thread(new Runnable(){
-                @Override
-                public void run() {
-                    String result;
-                    while(true) {
-                        result = RequestManager.requestThreadFactory.getResult();
-                        if(result != null) break;
-                    }
-                    //IMPORTANT: This is where behavior for requests should be implemented; call a function with "result" as argument.
-                    try {
-                        updateFriendsArray(result);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            wait.start();
-        }
+        RequestManager.addUpdateRequest(fileManager.getUUID(), response -> {
+            try {
+                updateFriendsArray(response);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        });
+        //final String[] args = {"update", fileManager.getUUID()};
+        //Thread wait; //calls a method once p has a result
+        //if(!fileManager.getUUID().equals("")) {
+        //    //create pokey thread to register
+        //    Thread t =  RequestManager.requestThreadFactory.newThread(new RequestTask( "https://poke.zachlef.in/poke/update", args));
+        //    t.start();
+        //    //create thread to wait for result
+        //    wait = new Thread(new Runnable(){
+        //        @Override
+        //        public void run() {
+        //            String result;
+        //            while(true) {
+        //                result = RequestManager.requestThreadFactory.getResult();
+        //                if(result != null) break;
+        //            }
+        //            //IMPORTANT: This is where behavior for requests should be implemented; call a function with "result" as argument.
+        //            try {
+        //                updateFriendsArray(result);
+        //            } catch (JSONException e) {
+        //                e.printStackTrace();
+        //            }
+        //        }
+        //    });
+        //    wait.start();
+        //}
     }
 
     //called from updateFriends
@@ -226,27 +238,31 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "User isn't registered.", Toast.LENGTH_LONG).show();
             return;
         }
-        final String[] args = {"friends/delete", fileManager.getUUID(), UUID};
-        Thread wait; //calls a method once p has a result
-        if(!fileManager.getUUID().equals("")) {
-            //create pokey thread to register
-            Thread t = RequestManager.requestThreadFactory.newThread(new RequestTask("https://poke.zachlef.in/poke/friends/delete", args));
-            t.start();
-            //create thread to wait for result
-            wait = new Thread(new Runnable(){
-                @Override
-                public void run() {
-                    String result;
-                    while(true) {
-                        result = RequestManager.requestThreadFactory.getResult();
-                        if(result != null) break;
-                    }
-                    //calls update friends on result
-                    updateFriends();
-                }
-            });
-            wait.start();
-        }
+        RequestManager.addRemoveFriendRequest(fileManager.getUUID(), UUID, response -> {
+            // TODO fix this
+            updateFriends();
+        });
+        //final String[] args = {"friends/delete", fileManager.getUUID(), UUID};
+        //Thread wait; //calls a method once p has a result
+        //if(!fileManager.getUUID().equals("")) {
+        //    //create pokey thread to register
+        //    Thread t = RequestManager.requestThreadFactory.newThread(new RequestTask("https://poke.zachlef.in/poke/friends/delete", args));
+        //    t.start();
+        //    //create thread to wait for result
+        //    wait = new Thread(new Runnable(){
+        //        @Override
+        //        public void run() {
+        //            String result;
+        //            while(true) {
+        //                result = RequestManager.requestThreadFactory.getResult();
+        //                if(result != null) break;
+        //            }
+        //            //calls update friends on result
+        //            updateFriends();
+        //        }
+        //    });
+        //    wait.start();
+        //}
     }
 
     //pop up dialog that shows when user holds down on a friend in the list

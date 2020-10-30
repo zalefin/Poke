@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private NotiMan notificationManager;
     private FileMan fileManager;
     private Handler updateHandler;
+    private Handler pollHandler;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -43,16 +44,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Init and start sync service intent
-        if (!isMyServiceRunning(SyncService.class)) {
-            Intent syncIntent = new Intent(this, SyncService.class);
-            this.startService(syncIntent);
-        }
 
-
-        // Init and start update thread after 10 seconds
+        // Init and start update thread after delay
         updateHandler = new Handler();
         updateHandler.postDelayed(new UpdateTask(updateHandler, this), UpdateTask.INTERVAL);
+
+        // Init and start poll thread after delay
+        pollHandler = new Handler();
+        pollHandler.postDelayed(new PollTask(pollHandler, this), PollTask.INTERVAL);
 
         //sdk version is needed for getSystemService
         notificationManager = new NotiMan(this);

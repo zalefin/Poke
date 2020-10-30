@@ -7,6 +7,7 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
+@Deprecated
 public class SyncService extends Service {
 
     private Handler pollHandler;

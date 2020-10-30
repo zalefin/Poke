@@ -16,10 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="false">
-        <service
-            android:name=".SyncService"
-            android:enabled="true"
-            android:exported="false"></service>
 
         <activity
             android:name=".ScanActivity"

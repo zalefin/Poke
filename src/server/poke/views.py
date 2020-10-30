@@ -75,9 +75,11 @@ def poll(request):
 def update(request):
     user = request.POST['user']
     if User.objects.filter(uuid=user).exists():
+        friend_uuids = [v['friend_uuid'] for v in Friend.objects.filter(user_uuid=user).values('friend_uuid')]
+        friend_names = list(map(lambda friend_uuid: User.objects.filter(uuid=friend_uuid).values('name')[0]['name'], friend_uuids))
         dat = {
                 'name': User.objects.filter(uuid=user).values('name')[0]['name'], # TODO see if there is a nicer way that this
-                'friends': [v['friend_uuid'] for v in Friend.objects.filter(user_uuid=user).values('friend_uuid')],
+                'friends': list(zip(friend_names, friend_uuids)),
                 }
         return HttpResponse(json.dumps(dat))
 

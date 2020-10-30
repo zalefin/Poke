@@ -43,4 +43,17 @@ public class NotiMan {
         notificationManager.notify(notificationId, builder.build());
         notificationId++;
     }
+
+    public void createNotification(String body) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(c, CHANNEL_ID)
+                .setSmallIcon(R.drawable.qrbackgroundtest)
+                .setContentTitle("Poked!")
+                .setContentText(body)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(c);
+        // notificationId is a unique int for each notification that you must define
+        notificationManager.notify(notificationId, builder.build());
+        notificationId++;
+    }
 }

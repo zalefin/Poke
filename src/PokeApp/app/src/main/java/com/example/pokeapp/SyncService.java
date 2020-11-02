@@ -7,19 +7,18 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
+@Deprecated
 public class SyncService extends Service {
 
-    private Handler updateHandler;
     private Handler pollHandler;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // Create the Handler object
-        updateHandler = new Handler();
-        UpdateTask updateTask = new UpdateTask(updateHandler);
+        pollHandler = new Handler();
+        PollTask pollTask = new PollTask(pollHandler, this);
         // Execute a runnable task as soon as possible
-        updateHandler.post(updateTask);
-
+        pollHandler.post(pollTask);
         return START_STICKY;
     }
 

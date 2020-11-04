@@ -10,6 +10,10 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class FriendAdapter extends BaseAdapter implements ListAdapter {
@@ -36,6 +40,16 @@ public class FriendAdapter extends BaseAdapter implements ListAdapter {
         return 0;
     }
 
+    public String getItemUUID(int pos) throws JSONException {
+        JSONArray friend = new JSONArray(friendList.get(pos));
+        return friend.getString(1);
+    }
+
+    public String getItemName(int pos) throws JSONException {
+        JSONArray friend = new JSONArray(friendList.get(pos));
+        return friend.getString(0);
+    }
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View view = convertView;
@@ -45,8 +59,14 @@ public class FriendAdapter extends BaseAdapter implements ListAdapter {
         }
 
         //Handle TextView and display friend name/uuid from list
-        TextView friendName = (TextView)view.findViewById(R.id.friend_text);
-        friendName.setText(friendList.get(position));
+        TextView friendName = (TextView)view.findViewById(R.id.friend_name_text);
+        TextView friendUUID = (TextView)view.findViewById(R.id.friend_uuid_text);
+        try {
+            friendName.setText(getItemName(position));
+            friendUUID.setText(getItemUUID(position));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         return view;
     }

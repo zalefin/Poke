@@ -6,9 +6,16 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.RequiresApi;
@@ -59,11 +66,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //sets uuid text to user uuid
-        Log.i("Main", "created main");
         TextView userUUID = (TextView)findViewById(R.id.uuidView);
         userUUID.setText(fileManager.getName() + "\n" + fileManager.getUUID());
 
-        //set up list view with friendAdapter and click listeners
+        //set up friend list view with friendAdapter and click listeners
         friendsArray = new ArrayList<String>();
         adapter = new FriendAdapter(friendsArray, this);
         ListView listView = (ListView) findViewById(R.id.list_view);
@@ -83,14 +89,17 @@ public class MainActivity extends AppCompatActivity {
     private AdapterView.OnItemClickListener friendClickedHandler = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
             //pokes UUID of list item
-            poke(parent.getItemAtPosition(position).toString(), "Test Message");
+            try {
+                poke(adapter.getItemUUID(position), "Test Message");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     };
 
     //handles list view long click
     private AdapterView.OnItemLongClickListener friendLongClickHandler = new AdapterView.OnItemLongClickListener() {
         public boolean onItemLongClick(AdapterView parent, View v, int position, long id) {
-            Log.i("Main", "long click");
             //shows alert dialog asking if you want to delete friend
             showDeleteFriendDialog(parent.getItemAtPosition(position).toString());
             //prevents short click from also responding
@@ -117,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         RequestManager.addPokeRequest(fileManager.getUUID(), UUID, pokeID, response -> {
+            Log.d("POKE", "response:" + response);
             placeHolderPokeMethod(response);
         });
     }
@@ -134,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         RequestManager.addUpdateRequest(fileManager.getUUID(), response -> {
+            Log.d("Update Friends", "response:" + response);
             try {
                 updateFriendsArray(response);
             } catch (JSONException e) {
@@ -144,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
     //called from updateFriends
     private void updateFriendsArray(String r) throws JSONException {
+        Log.i("tag", r);
         friendsArray.clear();
         JSONObject friendsjson = new JSONObject(r);
         JSONArray friends = friendsjson.getJSONArray("friends");
@@ -152,16 +164,7 @@ public class MainActivity extends AppCompatActivity {
             friendsArray.add(friends.getString(i));
             Log.i("Main", "Added: " + friends.getString(i) );
         }
-
-        // UI updates must be run on UI thread
-        runOnUiThread(new Runnable(){
-            @Override
-            public void run(){
-                //updates list view
-                adapter.notifyDataSetChanged();
-            }
-        });
-
+        adapter.notifyDataSetChanged();
     }
 
     //Called when poke is pressed with test UUID
@@ -171,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         RequestManager.addRemoveFriendRequest(fileManager.getUUID(), UUID, response -> {
-            // TODO fix this
+            Log.d("Remove", "response:" + response);
             updateFriends();
         });
     }

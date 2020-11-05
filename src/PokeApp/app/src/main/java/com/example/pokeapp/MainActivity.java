@@ -111,7 +111,11 @@ public class MainActivity extends AppCompatActivity {
     private AdapterView.OnItemLongClickListener friendLongClickHandler = new AdapterView.OnItemLongClickListener() {
         public boolean onItemLongClick(AdapterView parent, View v, int position, long id) {
             //shows alert dialog asking if you want to delete friend
-            showDeleteFriendDialog(parent.getItemAtPosition(position).toString());
+            try {
+                showDeleteFriendDialog(adapter.getItemUUID(position));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             //prevents short click from also responding
             return true;
         }
@@ -184,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
             friendsArray.add(friends.getString(i));
             Log.i("Main", "Added: " + friends.getString(i) );
         }
+
         adapter.notifyDataSetChanged();
     }
 

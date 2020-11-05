@@ -37,13 +37,12 @@ def do_poke_inbound(request):
     # Confirm user exists and user is friends with target
     if User.objects.filter(uuid=user).exists() and Friend.objects.filter(user_uuid=user, friend_uuid=target).exists():
         POKE_QUEUE[target].append([user, payload])
-        print(POKE_QUEUE)
         friend_record = Friend.objects.get(user_uuid=user, friend_uuid=target)
         friend_record.total_pokes += 1
         friend_record.save() # commit row change to db
         return HttpResponse('success')
     else:
-        return HttpResponse('failure')
+        return HttpResponse('failure', status=400)
 
 
 @csrf_exempt
@@ -67,7 +66,7 @@ def poll(request):
         return HttpResponse(json.dumps(dat))
 
     else:
-        return HttpResponse('failure')
+        return HttpResponse('failure', status=400)
 
 
 @csrf_exempt
@@ -84,7 +83,7 @@ def update(request):
         return HttpResponse(json.dumps(dat))
 
     else:
-        return HttpResponse('failure')
+        return HttpResponse('failure', status=400)
 
 
 @csrf_exempt
@@ -101,7 +100,7 @@ def add_friend(request):
             Friend.objects.create(user_uuid=target, friend_uuid=user, added_date=dt_aware, total_pokes=0)
             return HttpResponse("success")
         else:
-            return HttpResponse("failure")
+            return HttpResponse("failure", status=400)
 
 @csrf_exempt
 @_must_be_POST
@@ -113,5 +112,5 @@ def delete_friend(request):
         Friend.objects.filter(user_uuid=target, friend_uuid=user).delete()
         return HttpResponse("success")
     else:
-        return HttpResponse("failure")
+        return HttpResponse("failure", status=400)
 

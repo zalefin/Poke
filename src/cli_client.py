@@ -3,6 +3,7 @@ import requests
 from argparse import ArgumentParser
 from uuid import UUID
 import json
+from collections import defaultdict
 
 class Client:
     def __init__(self, uuid, ssl, host):
@@ -12,6 +13,7 @@ class Client:
         self.host = host
         self.name = None
         self.friends = []
+        self.friend_names = defaultdict(lambda: '???')
 
     def _set_uuid(self, uuid):
         if uuid:
@@ -50,7 +52,7 @@ class Client:
     def print_friends(self):
         if len(self.friends):
             for i, fr in enumerate(self.friends):
-                print(i, fr)
+                print(i, self.friend_names[fr], fr)
         else:
             print('No friends')
 
@@ -76,12 +78,12 @@ class Client:
 
 if __name__ == '__main__':
     parser = ArgumentParser()
-    parser.add_argument('--host', default='localhost:8000', type=str, help='host address')
-    parser.add_argument('--ssl', action='store_true', help='use https')
+    parser.add_argument('--host', default='poke.zachlef.in', type=str, help='host address')
+    parser.add_argument('--nossl', action='store_false', help='do not use https')
     parser.add_argument('--data', default=None, type=str, help='data file to use')
     parser.add_argument('uuid', default=None, type=str, nargs='?', help='client uuid')
     args = parser.parse_args()
-    client = Client(args.uuid, args.ssl, args.host)
+    client = Client(args.uuid, args.nossl, args.host)
     if args.data:
         with open(args.data, 'r') as f:
             data = json.loads(f.read())
@@ -114,7 +116,12 @@ if __name__ == '__main__':
             print(update_dat)
         elif uin == 'u':
             update_dat = json.loads(client.update())
-            client.friends = [UUID(friend_uuid) for friend_uuid in update_dat['friends']]
+            client.friends = []
+            for friend_name, friend_uuid in update_dat['friends']:
+                f_uuid = UUID(friend_uuid)
+                client.friends.append(f_uuid)
+                client.friend_names[f_uuid] = friend_name
+
             client.name = update_dat['name']
             print('Updated friends and name')
         elif uin == 'p':

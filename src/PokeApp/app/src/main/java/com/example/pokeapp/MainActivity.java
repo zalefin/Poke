@@ -1,10 +1,13 @@
 package com.example.pokeapp;
 
+import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Gravity;
@@ -39,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean hasRegistered;
     private NotiMan notificationManager;
     private FileMan fileManager;
+    private Handler updateHandler;
+    private Handler pollHandler;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -46,9 +51,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Init and start sync service intent
-        Intent syncIntent = new Intent(this, SyncService.class);
-        this.startService(syncIntent);
+
+        // Init and start update thread after delay
+        updateHandler = new Handler();
+        updateHandler.postDelayed(new UpdateTask(updateHandler, this), UpdateTask.INTERVAL);
+
+        // Init and start poll thread after delay
+        pollHandler = new Handler();
+        pollHandler.postDelayed(new PollTask(pollHandler, this), PollTask.INTERVAL);
 
         //sdk version is needed for getSystemService
         notificationManager = new NotiMan(this);
@@ -107,10 +117,20 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     //Called when poll is pressed
     //Adds a poll request and sets up a listener.
     //This one will need you to parse a JSON result from a string. format is: {"pokes": []}
-    public void poll(View v) {
+    public void poll() {
         RequestManager.addPollRequest(fileManager.getUUID(), response -> {
             Log.d("POLL", "response:" + response);
             notificationManager.createNotification();

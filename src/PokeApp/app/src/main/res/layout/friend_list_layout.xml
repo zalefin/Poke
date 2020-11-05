@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/friend_name_text"
         android:layout_alignParentLeft="true"
-        android:paddingTop="2dp"
+        android:paddingTop="3dp"
         android:paddingLeft="8dp"
         android:textSize="11sp" />
 

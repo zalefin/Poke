@@ -3,6 +3,7 @@ package com.example.pokeapp;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -28,6 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
     public void sendRegiRequest(View v) {
         String nameText = ((EditText)findViewById(R.id.nameField)).getText().toString();
         RequestManager.addRegisterRequest(nameText, response -> {
+            Log.i("Register", response);
             fileManager.writeName(nameText);
             fileManager.writeUUID(response);
             fileManager.updateFile();

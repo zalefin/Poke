@@ -78,12 +78,12 @@ class Client:
 
 if __name__ == '__main__':
     parser = ArgumentParser()
-    parser.add_argument('--host', default='localhost:8000', type=str, help='host address')
-    parser.add_argument('--ssl', action='store_true', help='use https')
+    parser.add_argument('--host', default='poke.zachlef.in', type=str, help='host address')
+    parser.add_argument('--nossl', action='store_false', help='do not use https')
     parser.add_argument('--data', default=None, type=str, help='data file to use')
     parser.add_argument('uuid', default=None, type=str, nargs='?', help='client uuid')
     args = parser.parse_args()
-    client = Client(args.uuid, args.ssl, args.host)
+    client = Client(args.uuid, args.nossl, args.host)
     if args.data:
         with open(args.data, 'r') as f:
             data = json.loads(f.read())

@@ -3,6 +3,7 @@ import requests
 from argparse import ArgumentParser
 from uuid import UUID
 import json
+from collections import defaultdict
 
 class Client:
     def __init__(self, uuid, ssl, host):
@@ -12,6 +13,7 @@ class Client:
         self.host = host
         self.name = None
         self.friends = []
+        self.friend_names = defaultdict(lambda: '???')
 
     def _set_uuid(self, uuid):
         if uuid:
@@ -50,7 +52,7 @@ class Client:
     def print_friends(self):
         if len(self.friends):
             for i, fr in enumerate(self.friends):
-                print(i, fr)
+                print(i, self.friend_names[fr], fr)
         else:
             print('No friends')
 
@@ -114,7 +116,12 @@ if __name__ == '__main__':
             print(update_dat)
         elif uin == 'u':
             update_dat = json.loads(client.update())
-            client.friends = [UUID(friend_uuid) for friend_uuid in update_dat['friends']]
+            client.friends = []
+            for friend_name, friend_uuid in update_dat['friends']:
+                f_uuid = UUID(friend_uuid)
+                client.friends.append(f_uuid)
+                client.friend_names[f_uuid] = friend_name
+
             client.name = update_dat['name']
             print('Updated friends and name')
         elif uin == 'p':

@@ -1,26 +1,20 @@
 package com.example.pokeapp;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class FriendAdapter extends BaseAdapter implements ListAdapter {
-    private ArrayList<String> friendList;
+    private ArrayList<Friend> friendList;
     private Context context;
 
-    public FriendAdapter(ArrayList<String> friendList, Context context) {
+    public FriendAdapter(ArrayList<Friend> friendList, Context context) {
         this.friendList = friendList;
         this.context = context;
     }
@@ -40,14 +34,12 @@ public class FriendAdapter extends BaseAdapter implements ListAdapter {
         return 0;
     }
 
-    public String getItemUUID(int pos) throws JSONException {
-        JSONArray friend = new JSONArray(friendList.get(pos));
-        return friend.getString(1);
+    public String getItemUUID(int pos) {
+        return friendList.get(pos).getUUID();
     }
 
-    public String getItemName(int pos) throws JSONException {
-        JSONArray friend = new JSONArray(friendList.get(pos));
-        return friend.getString(0);
+    public String getItemName(int pos) {
+        return friendList.get(pos).getName();
     }
 
     @Override
@@ -61,12 +53,8 @@ public class FriendAdapter extends BaseAdapter implements ListAdapter {
         //Handle TextView and display friend name/uuid from list
         TextView friendName = (TextView)view.findViewById(R.id.friend_name_text);
         TextView friendUUID = (TextView)view.findViewById(R.id.friend_uuid_text);
-        try {
-            friendName.setText(getItemName(position));
-            friendUUID.setText(getItemUUID(position));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        friendName.setText(getItemName(position));
+        friendUUID.setText(getItemUUID(position));
 
         return view;
     }

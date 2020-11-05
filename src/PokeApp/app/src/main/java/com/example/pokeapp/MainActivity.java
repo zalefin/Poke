@@ -9,16 +9,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.RequiresApi;
@@ -37,7 +30,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<String> friendsArray;
+    private ArrayList<Friend> friendsArray;
     private FriendAdapter adapter;
     private boolean hasRegistered;
     private NotiMan notificationManager;
@@ -80,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         userUUID.setText(fileManager.getName() + "\n" + fileManager.getUUID());
 
         //set up friend list view with friendAdapter and click listeners
-        friendsArray = new ArrayList<String>();
+        friendsArray = new ArrayList<>();
         adapter = new FriendAdapter(friendsArray, this);
         ListView listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(adapter);
@@ -99,11 +92,7 @@ public class MainActivity extends AppCompatActivity {
     private AdapterView.OnItemClickListener friendClickedHandler = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
             //pokes UUID of list item
-            try {
-                poke(adapter.getItemUUID(position), "Test Message");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            poke(adapter.getItemUUID(position), "Test Message");
         }
     };
 
@@ -111,11 +100,7 @@ public class MainActivity extends AppCompatActivity {
     private AdapterView.OnItemLongClickListener friendLongClickHandler = new AdapterView.OnItemLongClickListener() {
         public boolean onItemLongClick(AdapterView parent, View v, int position, long id) {
             //shows alert dialog asking if you want to delete friend
-            try {
-                showDeleteFriendDialog(adapter.getItemUUID(position));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            showDeleteFriendDialog(adapter.getItemUUID(position));
             //prevents short click from also responding
             return true;
         }
@@ -185,7 +170,11 @@ public class MainActivity extends AppCompatActivity {
         JSONArray friends = friendsjson.getJSONArray("friends");
 
         for (int i = 0; i < friends.length(); i++){
-            friendsArray.add(friends.getString(i));
+            JSONArray jsFriendArray = friends.getJSONArray(i);
+            Friend friend = new Friend(
+                    jsFriendArray.getString(0),
+                    jsFriendArray.getString(1));
+            friendsArray.add(friend);
             Log.i("Main", "Added: " + friends.getString(i) );
         }
 

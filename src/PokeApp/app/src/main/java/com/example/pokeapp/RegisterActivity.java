@@ -30,7 +30,8 @@ public class RegisterActivity extends AppCompatActivity {
             Log.i("Register", response);
             fileManager.writeName(nameText);
             fileManager.writeUUID(response);
-            fileManager.updateFile();returnToMain();
+            fileManager.updateFile();
+            returnToMain();
         });
 
     }

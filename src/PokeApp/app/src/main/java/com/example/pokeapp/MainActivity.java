@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Friend> friendsArray;
     private FriendAdapter adapter;
     private boolean hasRegistered;
-    private NotiMan notificationManager;
     private FileMan fileManager;
     private Handler updateHandler;
     private Handler pollHandler;
@@ -44,17 +43,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        // Init and start update thread after delay
-        updateHandler = new Handler();
-        updateHandler.postDelayed(new UpdateTask(updateHandler, this), UpdateTask.INTERVAL);
-
-        // Init and start poll thread after delay
-        pollHandler = new Handler();
-        pollHandler.postDelayed(new PollTask(pollHandler, this), PollTask.INTERVAL);
-
-        //sdk version is needed for getSystemService
-        notificationManager = new NotiMan(this);
         fileManager = new FileMan(this);
         //added stuff for networking. Needed in ANY activity that makes requests.
         RequestManager.init(this);
@@ -65,9 +53,19 @@ public class MainActivity extends AppCompatActivity {
             Intent i = new Intent(this, RegisterActivity.class);
             startActivity(i);
         }else{
+            Log.i("tag", "Registered = true");
             hasRegistered = true;
         }
 
+        if(hasRegistered) {
+            // Init and start update thread after delay
+            updateHandler = new Handler();
+            updateHandler.postDelayed(new UpdateTask(updateHandler, this), UpdateTask.INTERVAL);
+
+            // Init and start poll thread after delay
+            pollHandler = new Handler();
+            pollHandler.postDelayed(new PollTask(pollHandler, this), PollTask.INTERVAL);
+        }
         //sets uuid text to user uuid
         TextView userUUID = (TextView)findViewById(R.id.uuidView);
         userUUID.setText(fileManager.getName() + "\n" + fileManager.getUUID());
@@ -99,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
     //handles list view long click
     private AdapterView.OnItemLongClickListener friendLongClickHandler = new AdapterView.OnItemLongClickListener() {
         public boolean onItemLongClick(AdapterView parent, View v, int position, long id) {
+            if(adapter.getItemUUID(position) == null){
+                return true;
+            }
             //shows alert dialog asking if you want to delete friend
             showDeleteFriendDialog(adapter.getItemUUID(position));
             //prevents short click from also responding
@@ -106,32 +107,15 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private boolean isMyServiceRunning(Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    //Called when poll is pressed
-    //Adds a poll request and sets up a listener.
-    //This one will need you to parse a JSON result from a string. format is: {"pokes": []}
-    public void poll() {
-        RequestManager.addPollRequest(fileManager.getUUID(), response -> {
-            Log.d("POLL", "response:" + response);
-            notificationManager.createNotification();
-        });
-    }
-
     //Called when poke is pressed with list item UUID
     //Adds a poke request and sets up a listener.
     //The result for this should just be a confirmation message.
     public void poke(String UUID, String pokeID) {
         if(!hasRegistered) {
             Toast.makeText(this, "User isn't registered.", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if(UUID == null){
             return;
         }
         RequestManager.addPokeRequest(fileManager.getUUID(), UUID, pokeID, response -> {
@@ -176,6 +160,11 @@ public class MainActivity extends AppCompatActivity {
                     jsFriendArray.getString(1));
             friendsArray.add(friend);
             Log.i("Main", "Added: " + friends.getString(i) );
+        }
+
+        if(friendsArray.isEmpty()){
+            Friend friend = new Friend("Add Some Friends!" , null);
+            friendsArray.add(friend);
         }
 
         adapter.notifyDataSetChanged();

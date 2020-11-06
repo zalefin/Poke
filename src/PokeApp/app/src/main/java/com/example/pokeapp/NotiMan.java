@@ -57,9 +57,8 @@ public class NotiMan {
     public void createNotification(String body) {
         //create intent to open app
         Intent openApp = new Intent(c, MainActivity.class);
-        openApp.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         //create pending intent with openApp
-        PendingIntent onTap = PendingIntent.getActivity(c, 0, openApp, 0);
+        PendingIntent onTap = PendingIntent.getActivity(c, 0, openApp, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(c, CHANNEL_ID)
                 .setSmallIcon(R.drawable.qrbackgroundtest)

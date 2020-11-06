@@ -23,11 +23,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-
-//Register request
-//type in name, ex "wewlad"
-//send request to http://zachlef.in/register/name=wewlad, returns UUID
-
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Friend> friendsArray;
@@ -90,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     private AdapterView.OnItemClickListener friendClickedHandler = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
             //pokes UUID of list item
-            poke(adapter.getItemUUID(position), "Test Message");
+            poke(adapter.getItemUUID(position), "2");
         }
     };
 

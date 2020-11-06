@@ -24,16 +24,13 @@ public class RegisterActivity extends AppCompatActivity {
         fileManager = new FileMan(this);
     }
 
-    Thread wait;
-    String regiResult = null;
     public void sendRegiRequest(View v) {
         String nameText = ((EditText)findViewById(R.id.nameField)).getText().toString();
         RequestManager.addRegisterRequest(nameText, response -> {
             Log.i("Register", response);
             fileManager.writeName(nameText);
             fileManager.writeUUID(response);
-            fileManager.updateFile();
-            returnToMain();
+            fileManager.updateFile();returnToMain();
         });
 
     }

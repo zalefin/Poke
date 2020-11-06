@@ -32,18 +32,15 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Friend> friendsArray;
     private FriendAdapter adapter;
-    private boolean hasRegistered;
     private FileMan fileManager;
-    private Handler updateHandler;
-    private Handler pollHandler;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         fileManager = new FileMan(this);
+
         //added stuff for networking. Needed in ANY activity that makes requests.
         RequestManager.init(this);
 
@@ -53,30 +50,9 @@ public class MainActivity extends AppCompatActivity {
             Intent i = new Intent(this, RegisterActivity.class);
             startActivity(i);
         }else{
-            Log.i("tag", "Registered = true");
-            hasRegistered = true;
+            initHandlers();
+            initFriendList();
         }
-
-        if(hasRegistered) {
-            // Init and start update thread after delay
-            updateHandler = new Handler();
-            updateHandler.postDelayed(new UpdateTask(updateHandler, this), UpdateTask.INTERVAL);
-
-            // Init and start poll thread after delay
-            pollHandler = new Handler();
-            pollHandler.postDelayed(new PollTask(pollHandler, this), PollTask.INTERVAL);
-        }
-        //sets uuid text to user uuid
-        TextView userUUID = (TextView)findViewById(R.id.uuidView);
-        userUUID.setText(fileManager.getName() + "\n" + fileManager.getUUID());
-
-        //set up friend list view with friendAdapter and click listeners
-        friendsArray = new ArrayList<>();
-        adapter = new FriendAdapter(friendsArray, this);
-        ListView listView = (ListView) findViewById(R.id.list_view);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(friendClickedHandler);
-        listView.setOnItemLongClickListener(friendLongClickHandler);
     }
 
     @Override
@@ -84,6 +60,30 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         //tries to update friends array
         updateFriends();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void initHandlers(){
+        // Init and start update thread after delay
+        Handler updateHandler = new Handler();
+        updateHandler.postDelayed(new UpdateTask(updateHandler, this), UpdateTask.INTERVAL);
+
+        // Init and start poll thread after delay
+        Handler pollHandler = new Handler();
+        pollHandler.postDelayed(new PollTask(pollHandler, this), PollTask.INTERVAL);
+    }
+
+    private void initFriendList(){
+        //sets uuid text to user uuid
+        TextView userUUID = (TextView)findViewById(R.id.uuidView);
+        userUUID.setText(fileManager.getName() + "\n" + fileManager.getUUID());
+        //set up friend list view with friendAdapter and click listeners
+        friendsArray = new ArrayList<>();
+        adapter = new FriendAdapter(friendsArray, this);
+        ListView listView = (ListView) findViewById(R.id.list_view);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(friendClickedHandler);
+        listView.setOnItemLongClickListener(friendLongClickHandler);
     }
 
     //handles list view clicks
@@ -111,10 +111,6 @@ public class MainActivity extends AppCompatActivity {
     //Adds a poke request and sets up a listener.
     //The result for this should just be a confirmation message.
     public void poke(String UUID, String pokeID) {
-        if(!hasRegistered) {
-            Toast.makeText(this, "User isn't registered.", Toast.LENGTH_LONG).show();
-            return;
-        }
         if(UUID == null){
             return;
         }
@@ -132,10 +128,6 @@ public class MainActivity extends AppCompatActivity {
     //Adds an update request and sets up a listener.
     //Similar result to poll; JSON array string with {"name": "Jake", "friends": ["uuid","uuid"]}
     public void updateFriends() {
-        if(!hasRegistered) {
-            Toast.makeText(this, "User isn't registered.", Toast.LENGTH_LONG).show();
-            return;
-        }
         RequestManager.addUpdateRequest(fileManager.getUUID(), response -> {
             Log.d("Update Friends", "response:" + response);
             try {
@@ -172,10 +164,6 @@ public class MainActivity extends AppCompatActivity {
 
     //Called when poke is pressed with test UUID
     public void removeFriend(String UUID) {
-        if(!hasRegistered) {
-            Toast.makeText(this, "User isn't registered.", Toast.LENGTH_LONG).show();
-            return;
-        }
         RequestManager.addRemoveFriendRequest(fileManager.getUUID(), UUID, response -> {
             Log.d("Remove", "response:" + response);
             updateFriends();
@@ -205,10 +193,6 @@ public class MainActivity extends AppCompatActivity {
 
     //starts add friend activity
     public void addFriend(View v) {
-        if(!hasRegistered) {
-            Toast.makeText(this, "User isn't registered.", Toast.LENGTH_LONG).show();
-            return;
-        }
         Intent intent = new Intent(this, AddFriendActivity.class);
         startActivity(intent);
     }

@@ -63,7 +63,7 @@ public class RequestManager {
     public static void addUpdateRequest(
             String userUUID,
             Response.Listener<String> callback,
-            Response.ErrorListener errorListener) {
+            @Nullable Response.ErrorListener errorListener) {
         final Map<String, String> params = new HashMap<>();
         params.put("user", userUUID);
         PokeRequest request = new PokeRequest(BASE_URL + "poke/update",
@@ -75,7 +75,7 @@ public class RequestManager {
             String userUUID,
             String targetUUID,
             Response.Listener<String> callback,
-            Response.ErrorListener errorListener) {
+            @Nullable Response.ErrorListener errorListener) {
         final Map<String, String> params = new HashMap<>();
         params.put("user", userUUID);
         params.put("target", targetUUID);
@@ -88,7 +88,7 @@ public class RequestManager {
             String userUUID,
             String targetUUID,
             Response.Listener<String> callback,
-            Response.ErrorListener errorListener) {
+            @Nullable Response.ErrorListener errorListener) {
         final Map<String, String> params = new HashMap<>();
         params.put("user", userUUID);
         params.put("target", targetUUID);

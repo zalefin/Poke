@@ -41,7 +41,7 @@ public class PokeAdapter extends BaseAdapter implements ListAdapter {
 
         //Handle TextView and display friend name/uuid from list
         TextView pokeMessage = (TextView)view.findViewById(R.id.poke_message_text);
-        pokeMessage.setText(PokeType.values()[position].getContent());
+        pokeMessage.setText(PokeType.fromId(position).getContent());
 
         return view;
     }

@@ -9,8 +9,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,8 +27,10 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ArrayList<Poke> pokesArray;
     private ArrayList<Friend> friendsArray;
-    private FriendAdapter adapter;
+    private FriendAdapter friendAdapter;
+    private PokeAdapter pokeAdapter;
     private FileMan fileManager;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         }else{
             initHandlers();
             initFriendList();
+            initPokeList();
         }
     }
 
@@ -74,29 +79,38 @@ public class MainActivity extends AppCompatActivity {
         userUUID.setText(fileManager.getName() + "\n" + fileManager.getUUID());
         //set up friend list view with friendAdapter and click listeners
         friendsArray = new ArrayList<>();
-        adapter = new FriendAdapter(friendsArray, this);
+        friendAdapter = new FriendAdapter(friendsArray, this);
         ListView listView = (ListView) findViewById(R.id.list_view);
-        listView.setAdapter(adapter);
+        listView.setAdapter(friendAdapter);
         listView.setOnItemClickListener(friendClickedHandler);
         listView.setOnItemLongClickListener(friendLongClickHandler);
+    }
+
+    private void initPokeList(){
+        String userUUID = fileManager.getUUID();
+        //set up friend list view with friendAdapter and click listeners
+        pokesArray = new ArrayList<>();
+        pokesArray.add(new Poke(userUUID, "1", "Message 1"));
+        pokesArray.add(new Poke(userUUID, "2", "Message 2"));
+        pokesArray.add(new Poke(userUUID, "3", "Message 3"));
+        pokeAdapter = new PokeAdapter(pokesArray, this);
     }
 
     //handles list view clicks
     private AdapterView.OnItemClickListener friendClickedHandler = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
-            //pokes UUID of list item
-            poke(adapter.getItemUUID(position), "2");
+            showPokeOptions(friendAdapter.getItemUUID(position),friendAdapter.getItemName(position));
         }
     };
 
     //handles list view long click
     private AdapterView.OnItemLongClickListener friendLongClickHandler = new AdapterView.OnItemLongClickListener() {
         public boolean onItemLongClick(AdapterView parent, View v, int position, long id) {
-            if(adapter.getItemUUID(position) == null){
+            if(friendAdapter.getItemUUID(position) == null){
                 return true;
             }
             //shows alert dialog asking if you want to delete friend
-            showDeleteFriendDialog(adapter.getItemUUID(position));
+            showDeleteFriendDialog(friendAdapter.getItemUUID(position));
             //prevents short click from also responding
             return true;
         }
@@ -111,12 +125,8 @@ public class MainActivity extends AppCompatActivity {
         }
         RequestManager.addPokeRequest(fileManager.getUUID(), UUID, pokeID, response -> {
             Log.d("POKE", "response:" + response);
-            placeHolderPokeMethod(response);
+            Toast.makeText(this, "Poked with " + pokeID, Toast.LENGTH_SHORT).show();
         });
-    }
-
-    public void placeHolderPokeMethod(String r){
-        Toast.makeText(this, "Poked!" + r, Toast.LENGTH_SHORT).show();
     }
 
     //Called when update is pressed
@@ -154,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
             friendsArray.add(friend);
         }
 
-        adapter.notifyDataSetChanged();
+        friendAdapter.notifyDataSetChanged();
     }
 
     //Called when poke is pressed with test UUID
@@ -184,6 +194,21 @@ public class MainActivity extends AppCompatActivity {
         });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    //pop up dialog that shows when user clicks on friend in list
+    private void showPokeOptions(String targetUUID, String name){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setAdapter(pokeAdapter, (dialog, item) -> {
+            poke(targetUUID, pokeAdapter.getItemPokeID(item));
+            dialog.dismiss();
+        });
+
+        builder.setCancelable(false);
+        builder.setTitle("Poke " + name + "?");
+        builder.setNegativeButton("Cancel", (dialog, id) -> dialog.dismiss());
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     //starts add friend activity

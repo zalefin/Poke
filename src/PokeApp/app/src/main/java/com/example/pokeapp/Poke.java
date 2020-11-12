@@ -2,25 +2,29 @@ package com.example.pokeapp;
 
 public class Poke {
 
-    private String pokeID;
-    private String senderUUID;
-    private String message;
+    private final String senderUUID;
+    private final String targetUUID;
+    private final PokeType pokeType;
 
-    public Poke(String senderUUID, String pokeID, String message ) {
+    public Poke(
+            String senderUUID,
+            String targetUUID,
+            PokeType pokeType) {
         // Args are sender UUID, pokeID because that is what the endpoint returns
         this.senderUUID = senderUUID;
-        this.pokeID = pokeID;
-        this.message = message;
+        this.targetUUID = targetUUID;
+        this.pokeType = pokeType;
     }
 
     public String getSenderUUID() {
         return senderUUID;
     }
 
-    public String getPokeID() {
-        return pokeID;
+    public String getTargetUUID() {
+        return targetUUID;
     }
 
-    public String getMessage() { return message; }
-
+    public PokeType getPokeType() {
+        return pokeType;
+    }
 }

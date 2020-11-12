@@ -54,7 +54,7 @@ public class NotiMan {
         notificationId++;
     }
 
-    public void createNotification(String body) {
+    public void createNotification(String id) {
         //create intent to open app
         Intent openApp = new Intent(c, MainActivity.class);
         //create pending intent with openApp
@@ -63,7 +63,7 @@ public class NotiMan {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(c, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("Poked!")
-                .setContentText(body)
+                .setContentText(PokeType.fromId(id).getContent())
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(onTap)
                 .setAutoCancel(true);

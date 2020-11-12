@@ -42,7 +42,8 @@ public class PollTask implements Runnable{
                     JSONArray poke = pokes.getJSONArray(i);
                     String recvUUID = poke.getString(0);
                     String payload = poke.getString(1);
-                    notiMan.createNotification(recvUUID + "\n" + payload);
+                    String message = PokeType.fromId(payload).getContent();
+                    notiMan.createNotification(recvUUID + "\n" + message);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

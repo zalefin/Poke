@@ -25,6 +25,7 @@
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
         android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
         />
 
 </RelativeLayout>

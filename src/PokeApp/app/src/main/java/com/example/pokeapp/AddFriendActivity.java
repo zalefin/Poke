@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -100,6 +101,9 @@ public class AddFriendActivity extends AppCompatActivity{
 
     //writes generated qr to file
     private void writeBitmapToFile(String filename, Bitmap outBmp){
+        if(outBmp == null){
+            return;
+        }
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         outBmp.compress(Bitmap.CompressFormat.PNG, 100, bytes);
         FileOutputStream fos;

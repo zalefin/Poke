@@ -41,7 +41,7 @@ public class NotiMan {
         PendingIntent onTap = PendingIntent.getActivity(c, 0, openApp, 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(c, CHANNEL_ID)
-                .setSmallIcon(R.drawable.qrbackgroundtest) //icon
+                .setSmallIcon(R.drawable.ic_launcher_foreground) //icon
                 .setContentTitle("Notification") //notification name
                 .setContentText("This is a notification.") //notification content
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT) //priority
@@ -61,7 +61,7 @@ public class NotiMan {
         PendingIntent onTap = PendingIntent.getActivity(c, 0, openApp, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(c, CHANNEL_ID)
-                .setSmallIcon(R.drawable.qrbackgroundtest)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("Poked!")
                 .setContentText(body)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

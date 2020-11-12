@@ -1,9 +1,12 @@
 package com.example.pokeapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -32,6 +35,10 @@ public class RegisterActivity extends AppCompatActivity {
             fileManager.writeUUID(response);
             fileManager.updateFile();
             returnToMain();
+        }, error -> {
+            new android.app.AlertDialog.Builder(this).setTitle("Name Too Long!")
+            .setMessage("Name must be 32 characters or less.")
+            .setPositiveButton("OK", (dialog, id) -> dialog.dismiss()).show();
         });
 
     }

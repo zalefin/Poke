@@ -25,21 +25,13 @@ public class FriendAdapter extends BaseAdapter implements ListAdapter {
     }
 
     @Override
-    public Object getItem(int pos) {
+    public Friend getItem(int pos) {
         return friendList.get(pos);
     }
 
     @Override
     public long getItemId(int pos) {
         return 0;
-    }
-
-    public String getItemUUID(int pos) {
-        return friendList.get(pos).getUUID();
-    }
-
-    public String getItemName(int pos) {
-        return friendList.get(pos).getName();
     }
 
     @Override
@@ -53,8 +45,9 @@ public class FriendAdapter extends BaseAdapter implements ListAdapter {
         //Handle TextView and display friend name/uuid from list
         TextView friendName = (TextView)view.findViewById(R.id.friend_name_text);
         TextView friendUUID = (TextView)view.findViewById(R.id.friend_uuid_text);
-        friendName.setText(getItemName(position));
-        friendUUID.setText(getItemUUID(position));
+        Friend friend = getItem(position);
+        friendName.setText(friend.getName());
+        friendUUID.setText(friend.getUUID());
 
         return view;
     }

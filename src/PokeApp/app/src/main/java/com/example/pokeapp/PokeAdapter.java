@@ -1,12 +1,16 @@
 package com.example.pokeapp;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 
 public class PokeAdapter extends BaseAdapter implements ListAdapter {
@@ -39,10 +43,15 @@ public class PokeAdapter extends BaseAdapter implements ListAdapter {
             view = inflater.inflate(R.layout.poke_list_layout, null);
         }
 
-        //Handle TextView and display friend name/uuid from list
+        //this is being replaced with image
+        /*
         TextView pokeMessage = (TextView)view.findViewById(R.id.poke_message_text);
         pokeMessage.setText(PokeType.fromId(position).getContent());
+        */
 
+        ImageView pokeImage = (ImageView)view.findViewById(R.id.poke_image);
+        Drawable image = ContextCompat.getDrawable(context, PokeType.fromId(position).getImageSrc());
+        pokeImage.setImageDrawable(image);
         return view;
     }
 }

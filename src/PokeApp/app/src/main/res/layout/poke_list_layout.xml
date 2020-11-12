@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <!--
     <TextView
         android:id="@+id/poke_message_text"
         android:layout_width="wrap_content"
@@ -14,5 +15,17 @@
         android:paddingBottom="20dp"
         android:textSize="16sp"
         android:textStyle="bold" />
+    -->
+    <ImageView
+        android:id="@+id/poke_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        />
 
 </RelativeLayout>

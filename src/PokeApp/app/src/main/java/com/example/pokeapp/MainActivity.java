@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<Friend> friendsArray;
+    private FriendsList friendsList;
     private FriendAdapter friendAdapter;
     private PokeAdapter pokeAdapter;
     private FileMan fileManager;
@@ -72,11 +72,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void initFriendList(){
         //sets uuid text to user uuid
-        TextView userUUID = (TextView)findViewById(R.id.uuidView);
-        userUUID.setText(fileManager.getName() + "\n" + fileManager.getUUID());
+        TextView userUUID = (TextView)findViewById(R.id.userText);
+        userUUID.setText(fileManager.getName());
         //set up friend list view with friendAdapter and click listeners
-        friendsArray = new ArrayList<>();
-        friendAdapter = new FriendAdapter(friendsArray, this);
+        friendsList = new FriendsList();
+        friendAdapter = new FriendAdapter(friendsList, this);
         ListView listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(friendAdapter);
         listView.setOnItemClickListener(friendClickedHandler);
@@ -143,11 +143,11 @@ public class MainActivity extends AppCompatActivity {
 
     //called from updateFriends
     private void updateFriendsArray(ArrayList<Friend> updatedFriends) {
-        friendsArray.clear();
-        friendsArray.addAll(updatedFriends);
-        if(friendsArray.isEmpty()){
+        friendsList.clearList();
+        friendsList.addAll(updatedFriends);
+        if(friendsList.isEmpty()){
             Friend friend = new Friend("Add Some Friends!" , null);
-            friendsArray.add(friend);
+            friendsList.addFriend(friend);
         }
 
         friendAdapter.notifyDataSetChanged();

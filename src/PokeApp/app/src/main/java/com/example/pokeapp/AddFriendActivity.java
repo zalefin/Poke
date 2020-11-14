@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Random;
 
 
 public class AddFriendActivity extends AppCompatActivity{
@@ -52,7 +53,7 @@ public class AddFriendActivity extends AppCompatActivity{
         if(loadedBmp == null) {
             Log.i("QR", "Creating Bitmap");
             Bitmap outBmp = createQrCodeFromUUID(fileManager.getUUID());
-            outBmp = changeColor(outBmp, 0x7CFC00);
+            outBmp = changeColor(outBmp);
             writeBitmapToFile("qrcode.png", outBmp);
             //reload page
             this.finish();
@@ -60,6 +61,7 @@ public class AddFriendActivity extends AppCompatActivity{
         }else{
             //gets UUID from fileman
             uuidText.setText(fileManager.getName() + "\n" + fileManager.getUUID());
+            loadedBmp = changeColor(loadedBmp);
             qrView.setImageBitmap(loadedBmp);
         }
     }
@@ -81,7 +83,13 @@ public class AddFriendActivity extends AppCompatActivity{
     }
 
     //changes background color of qr code
-    private Bitmap changeColor(Bitmap input, int color){
+    private Bitmap changeColor(Bitmap input){
+
+        Random rand = new Random();
+
+        int color = rand.nextInt(0xfff);
+        color += 0xfff000;
+
         if(input == null){
             return null;
         }

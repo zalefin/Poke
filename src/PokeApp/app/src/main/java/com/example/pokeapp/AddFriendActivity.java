@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +29,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Random;
 
 
 public class AddFriendActivity extends AppCompatActivity{
@@ -52,7 +54,7 @@ public class AddFriendActivity extends AppCompatActivity{
         if(loadedBmp == null) {
             Log.i("QR", "Creating Bitmap");
             Bitmap outBmp = createQrCodeFromUUID(fileManager.getUUID());
-            outBmp = changeColor(outBmp, 0x7CFC00);
+            outBmp = changeColor(outBmp);
             writeBitmapToFile("qrcode.png", outBmp);
             //reload page
             this.finish();
@@ -60,6 +62,7 @@ public class AddFriendActivity extends AppCompatActivity{
         }else{
             //gets UUID from fileman
             uuidText.setText(fileManager.getName() + "\n" + fileManager.getUUID());
+            loadedBmp = changeColor(loadedBmp);
             qrView.setImageBitmap(loadedBmp);
         }
     }
@@ -81,7 +84,12 @@ public class AddFriendActivity extends AppCompatActivity{
     }
 
     //changes background color of qr code
-    private Bitmap changeColor(Bitmap input, int color){
+    private Bitmap changeColor(Bitmap input){
+
+        int [] colors = {0xffb3ba, 0xffdfba, 0xffffba, 0xbaffc9, 0xbae1ff};
+        Random rand = new Random();
+        int color = colors[rand.nextInt(5)];
+
         if(input == null){
             return null;
         }

@@ -11,22 +11,22 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class FriendAdapter extends BaseAdapter implements ListAdapter {
-    private ArrayList<Friend> friendList;
+    private FriendsList friendsList;
     private Context context;
 
-    public FriendAdapter(ArrayList<Friend> friendList, Context context) {
-        this.friendList = friendList;
+    public FriendAdapter(FriendsList friendsList, Context context) {
+        this.friendsList = friendsList;
         this.context = context;
     }
 
     @Override
     public int getCount() {
-        return friendList.size();
+        return friendsList.getSize();
     }
 
     @Override
     public Friend getItem(int pos) {
-        return friendList.get(pos);
+        return friendsList.getFriendAt(pos);
     }
 
     @Override

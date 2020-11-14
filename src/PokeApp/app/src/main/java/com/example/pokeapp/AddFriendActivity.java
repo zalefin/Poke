@@ -88,7 +88,7 @@ public class AddFriendActivity extends AppCompatActivity{
 
         int [] colors = {0xffb3ba, 0xffdfba, 0xffffba, 0xbaffc9, 0xbae1ff};
         Random rand = new Random();
-        int color = colors[rand.nextInt(4)];
+        int color = colors[rand.nextInt(5)];
 
         if(input == null){
             return null;

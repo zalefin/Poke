@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -85,10 +86,9 @@ public class AddFriendActivity extends AppCompatActivity{
     //changes background color of qr code
     private Bitmap changeColor(Bitmap input){
 
+        int [] colors = {0xffb3ba, 0xffdfba, 0xffffba, 0xbaffc9, 0xbae1ff};
         Random rand = new Random();
-
-        int color = rand.nextInt(0xfff);
-        color += 0xfff000;
+        int color = colors[rand.nextInt(4)];
 
         if(input == null){
             return null;

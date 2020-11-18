@@ -155,11 +155,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        if(friendsList.isEmpty()){
-            Friend friend = new Friend("Add Some Friends!" , null);
-            friendsList.addFriend(friend);
-        }
-
         friendAdapter.notifyDataSetChanged();
     }
 

@@ -154,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("Friends", "Adding " + f.getName() + " to friends list.");
             }
         }
+
         if(friendsList.isEmpty()){
             Friend friend = new Friend("Add Some Friends!" , null);
             friendsList.addFriend(friend);
@@ -164,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Called when poke is pressed with test UUID
     public void removeFriend(Friend friend) {
+        friendsList.removeFriendByUUID(friend.getUUID());
         RequestManager.addRemoveFriendRequest(fileManager.getUUID(), friend.getUUID(), response -> {
             Log.d("Remove", "response:" + response);
             updateFriends();

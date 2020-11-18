@@ -16,18 +16,6 @@ public class FriendsList{
         return friendsArray.isEmpty();
     }
 
-    public void addAll(ArrayList<Friend> friends){
-        friendsArray.addAll(friends);
-        for (Friend f: friends) {
-            friendsMap.put(f.getUUID(), f);
-        }
-    }
-
-    public void clearList(){
-        friendsArray.clear();
-        friendsMap.clear();
-    }
-
     public boolean contains(Friend f){
         return getFriendFromUUID(f.getUUID()) != null;
     }
@@ -39,6 +27,15 @@ public class FriendsList{
     public void addFriend(Friend friend){
         friendsArray.add(friend);
         friendsMap.put(friend.getUUID(), friend);
+    }
+
+    public void removeFriendByUUID(String UUID){
+        for (Friend f: friendsArray) {
+            if(f.getUUID().equals(UUID)){
+                friendsArray.remove(f);
+            }
+        }
+        friendsMap.remove(UUID);
     }
 
     public Friend getFriendAt(int i){

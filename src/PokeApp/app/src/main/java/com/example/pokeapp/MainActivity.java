@@ -86,7 +86,12 @@ public class MainActivity extends AppCompatActivity {
     //handles list view clicks
     private AdapterView.OnItemClickListener friendClickedHandler = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
-            showPokeOptions(friendAdapter.getItem(position));
+            Friend f = friendAdapter.getItem(position);
+            if(!f.hasPokes()){
+                showPokeOptions(f);
+            }else{
+                showReceivedPoke(f);
+            }
         }
     };
 
@@ -143,8 +148,12 @@ public class MainActivity extends AppCompatActivity {
 
     //called from updateFriends
     private void updateFriendsArray(ArrayList<Friend> updatedFriends) {
-        friendsList.clearList();
-        friendsList.addAll(updatedFriends);
+        for (Friend f: updatedFriends) {
+            if(!friendsList.contains(f)){
+                friendsList.addFriend(f);
+                Log.i("Friends", "Adding " + f.getName() + " to friends list.");
+            }
+        }
         if(friendsList.isEmpty()){
             Friend friend = new Friend("Add Some Friends!" , null);
             friendsList.addFriend(friend);
@@ -195,6 +204,32 @@ public class MainActivity extends AppCompatActivity {
         builder.setNegativeButton("Cancel", (dialog, id) -> dialog.dismiss());
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    //pop up dialog that shows when user clicks on friend in list
+    private void showReceivedPoke(Friend friend){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        Poke currentPoke = friend.getMostRecentPoke();
+        View pokeView = null;
+
+        pokeView = pokeAdapter.getView(currentPoke.getPokeType().getId(), pokeView, null );
+        builder.setView(pokeView);
+
+        builder.setCancelable(false);
+        builder.setTitle("Poke From " + friend.getName() + "!");
+        builder.setNegativeButton("Exit", (dialog, id) -> dialog.dismiss());
+
+        if(friend.hasPokes()) {
+            builder.setPositiveButton("Next", (dialog, id) -> {
+                dialog.dismiss();
+                showReceivedPoke(friend);
+            });
+        }
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        friendAdapter.notifyDataSetChanged();
     }
 
     //starts add friend activity

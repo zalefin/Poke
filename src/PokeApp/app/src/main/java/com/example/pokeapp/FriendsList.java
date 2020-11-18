@@ -28,6 +28,10 @@ public class FriendsList{
         friendsMap.clear();
     }
 
+    public boolean contains(Friend f){
+        return getFriendFromUUID(f.getUUID()) != null;
+    }
+
     public Friend getFriendFromUUID(String UUID){
         return friendsMap.get(UUID);
     }

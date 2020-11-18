@@ -16,7 +16,6 @@ public class PollTask implements Runnable{
     private Handler handler;
     private NotiMan notiMan;
     private FileMan fileMan;
-    private FriendsList friendsList;
 
     // TODO change min build version so we don't need these
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -24,7 +23,6 @@ public class PollTask implements Runnable{
         this.handler = handler;
         this.notiMan = new NotiMan(context);
         this.fileMan = new FileMan(context);
-        this.friendsList = new FriendsList();
     }
 
     @Override
@@ -42,7 +40,7 @@ public class PollTask implements Runnable{
                 JSONArray pokes = resJSON.getJSONArray("pokes");
                 for (int i = 0; i < pokes.length(); i++) {
                     JSONArray poke = pokes.getJSONArray(i);
-                    String name = friendsList.getFriendFromUUID(poke.getString(0)).getName();
+                    String name = Friend.friendsList.get(poke.getString(0)).getName();
                     String payload = poke.getString(1);
                     String message = PokeType.fromId(payload).getContent();
                     notiMan.createNotification(name + " Poked You! \n" + message);

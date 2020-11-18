@@ -154,9 +154,11 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("Friends", "Adding " + f.getName() + " to friends list.");
             }
         }
+        TextView noFriendsText = (TextView) findViewById(R.id.noFriendsText);
         if(friendsList.isEmpty()) {
-            TextView noFriendsText = (TextView) findViewById(R.id.noFriendsText);
             noFriendsText.setText(R.string.add_some_friends);
+        }else{
+            noFriendsText.setText("");
         }
         friendAdapter.notifyDataSetChanged();
     }

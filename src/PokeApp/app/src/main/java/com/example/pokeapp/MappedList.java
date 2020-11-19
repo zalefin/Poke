@@ -105,7 +105,7 @@ public class MappedList<T, K> implements List<T>{
     public boolean remove(@Nullable Object o) throws ClassCastException {
         T t = (T) o;
         K k = mapping.getKey(t);
-        if (valMap.containsKey(k)) {
+        if (!valMap.containsKey(k)) {
             return false;
         } else {
             valMap.remove(k);

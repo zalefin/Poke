@@ -9,6 +9,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class Friend {
+    public static MappedList<Friend, String> friendsList;
+
     // name is subject to change, UUID is not.
     private final String UUID;
     private String name;

@@ -9,25 +9,23 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 public class FriendAdapter extends BaseAdapter implements ListAdapter {
-    private FriendsList friendsList;
+    private MappedList<Friend, String> friendsList;
     private Context context;
 
-    public FriendAdapter(FriendsList friendsList, Context context) {
+    public FriendAdapter(MappedList<Friend, String> friendsList, Context context) {
         this.friendsList = friendsList;
         this.context = context;
     }
 
     @Override
     public int getCount() {
-        return friendsList.getSize();
+        return friendsList.size();
     }
 
     @Override
     public Friend getItem(int pos) {
-        return friendsList.getFriendAt(pos);
+        return friendsList.get(pos);
     }
 
     @Override

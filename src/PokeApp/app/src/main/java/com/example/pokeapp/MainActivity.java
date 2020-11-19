@@ -23,7 +23,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FriendsList friendsList;
     private FriendAdapter friendAdapter;
     private PokeAdapter pokeAdapter;
     private FileMan fileManager;
@@ -75,8 +74,8 @@ public class MainActivity extends AppCompatActivity {
         TextView userUUID = (TextView)findViewById(R.id.userText);
         userUUID.setText(fileManager.getName());
         //set up friend list view with friendAdapter and click listeners
-        friendsList = new FriendsList();
-        friendAdapter = new FriendAdapter(friendsList, this);
+        Friend.friendsList = new MappedList<>((friend) -> friend.getUUID());
+        friendAdapter = new FriendAdapter(Friend.friendsList, this);
         ListView listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(friendAdapter);
         listView.setOnItemClickListener(friendClickedHandler);
@@ -148,9 +147,11 @@ public class MainActivity extends AppCompatActivity {
 
     //called from updateFriends
     private void updateFriendsArray(ArrayList<Friend> updatedFriends) {
+        MappedList<Friend, String> friendsList = Friend.friendsList; // alias
+
         for (Friend f: updatedFriends) {
-            if(!friendsList.contains(f)){
-                friendsList.addFriend(f);
+            if(friendsList.get(f.getUUID()) == null){
+                friendsList.add(f);
                 Log.i("Friends", "Adding " + f.getName() + " to friends list.");
             }
         }
@@ -160,16 +161,21 @@ public class MainActivity extends AppCompatActivity {
         }else{
             noFriendsText.setText("");
         }
+
+        // Sort friends list by display name
+        friendsList.sort((a, b) -> a.getName().compareToIgnoreCase(b.getName()));
+
         friendAdapter.notifyDataSetChanged();
     }
 
     //Called when poke is pressed with test UUID
     public void removeFriend(Friend friend) {
-        friendsList.removeFriendByUUID(friend.getUUID());
-        RequestManager.addRemoveFriendRequest(fileManager.getUUID(), friend.getUUID(), response -> {
-            Log.d("Remove", "response:" + response);
-            updateFriends();
-        });
+        if(Friend.friendsList.removeByKey(friend.getUUID())){
+            RequestManager.addRemoveFriendRequest(fileManager.getUUID(), friend.getUUID(), response -> {
+                Log.d("Remove", "response:" + response);
+                updateFriends();
+            });
+        }
     }
 
     //pop up dialog that shows when user holds down on a friend in the list

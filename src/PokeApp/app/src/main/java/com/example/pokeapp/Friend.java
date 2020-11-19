@@ -3,6 +3,8 @@ package com.example.pokeapp;
 import androidx.annotation.Nullable;
 
 public class Friend {
+    public static MappedList<Friend, String> friendsList;
+
     // name is subject to change, UUID is not.
     private final String UUID;
     private String name;

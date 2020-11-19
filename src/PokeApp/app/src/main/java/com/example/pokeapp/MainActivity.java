@@ -148,13 +148,14 @@ public class MainActivity extends AppCompatActivity {
     //called from updateFriends
     private void updateFriendsArray(ArrayList<Friend> updatedFriends) {
         MappedList<Friend, String> friendsList = Friend.friendsList; // alias
-
+        //checks to see if there are any new friends
         for (Friend f: updatedFriends) {
             if(friendsList.get(f.getUUID()) == null){
                 friendsList.add(f);
                 Log.i("Friends", "Adding " + f.getName() + " to friends list.");
             }
         }
+        //if user has no friends, display "Add some friends!"
         TextView noFriendsText = (TextView) findViewById(R.id.noFriendsText);
         if(friendsList.isEmpty()) {
             noFriendsText.setText(R.string.add_some_friends);
@@ -170,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Called when poke is pressed with test UUID
     public void removeFriend(Friend friend) {
+        //attempts to remove friend from list. if successful, sends network request to remove
         if(Friend.friendsList.removeByKey(friend.getUUID())){
             RequestManager.addRemoveFriendRequest(fileManager.getUUID(), friend.getUUID(), response -> {
                 Log.d("Remove", "response:" + response);

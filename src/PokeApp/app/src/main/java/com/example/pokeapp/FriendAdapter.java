@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -40,10 +41,23 @@ public class FriendAdapter extends BaseAdapter implements ListAdapter {
             view = inflater.inflate(R.layout.friend_list_layout, null);
         }
 
-        //Handle TextView and display friend name/uuid from list
+        Friend friend = getItem(position);
+
+        TextView pokesText = (TextView)view.findViewById(R.id.pokesText);
+        String numPokes = "";
+        if(friend.hasPokes()){
+            if(friend.getNumPokes() == 1){
+                numPokes = friend.getNumPokes() + " new Poke!";
+            }else{
+                numPokes = friend.getNumPokes() + " new Pokes!";
+            }
+        }
+        pokesText.setText(numPokes);
+
+                //Handle TextView and display friend name/uuid from list
         TextView friendName = (TextView)view.findViewById(R.id.friend_name_text);
         TextView friendUUID = (TextView)view.findViewById(R.id.friend_uuid_text);
-        Friend friend = getItem(position);
+
         friendName.setText(friend.getName());
         friendUUID.setText(friend.getUUID());
 

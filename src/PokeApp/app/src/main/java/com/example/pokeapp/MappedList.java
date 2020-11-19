@@ -1,5 +1,7 @@
 package com.example.pokeapp;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -118,6 +120,16 @@ public class MappedList<T, K> implements List<T>{
         T t = values.get(index);
         remove(t);
         return t;
+    }
+
+    public boolean removeByKey(K k){
+        T t = get(k);
+        if (!valMap.containsKey(k)) {
+            return false;
+        } else {
+            valMap.remove(k);
+            return values.remove(t);
+        }
     }
 
     @Override

@@ -10,6 +10,8 @@ import androidx.annotation.RequiresApi;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class PollTask implements Runnable{
     public static final int INTERVAL = 15000; // time in milliseconds between each activation
 
@@ -40,10 +42,13 @@ public class PollTask implements Runnable{
                 JSONArray pokes = resJSON.getJSONArray("pokes");
                 for (int i = 0; i < pokes.length(); i++) {
                     JSONArray poke = pokes.getJSONArray(i);
-                    String name = Friend.friendsList.get(poke.getString(0)).getName();
+                    String senderUUID = poke.getString(0);
+                    String name = Friend.friendsList.get(senderUUID).getName();
                     String payload = poke.getString(1);
                     String message = PokeType.fromId(payload).getContent();
                     notiMan.createNotification(name + " Poked You! \n" + message);
+                    //adds received poke to receivedPokes queue in each friend
+                    Friend.friendsList.get(senderUUID).addReceivedPoke(new Poke(poke.getString(0), uuid, PokeType.fromId(payload)));
                 }
             } catch (Exception e) {
                 e.printStackTrace();

@@ -85,7 +85,12 @@ public class MainActivity extends AppCompatActivity {
     //handles list view clicks
     private AdapterView.OnItemClickListener friendClickedHandler = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
-            showPokeOptions(friendAdapter.getItem(position));
+            Friend f = friendAdapter.getItem(position);
+            if(!f.hasPokes()){
+                showPokeOptions(f);
+            }else{
+                showReceivedPoke(f);
+            }
         }
     };
 
@@ -143,11 +148,19 @@ public class MainActivity extends AppCompatActivity {
     //called from updateFriends
     private void updateFriendsArray(ArrayList<Friend> updatedFriends) {
         MappedList<Friend, String> friendsList = Friend.friendsList; // alias
-        friendsList.clear();
-        friendsList.addAll(updatedFriends);
-        if(friendsList.isEmpty()){
-            Friend friend = new Friend("Add Some Friends!" , null);
-            friendsList.add(friend);
+        //checks to see if there are any new friends
+        for (Friend f: updatedFriends) {
+            if(friendsList.get(f.getUUID()) == null){
+                friendsList.add(f);
+                Log.i("Friends", "Adding " + f.getName() + " to friends list.");
+            }
+        }
+        //if user has no friends, display "Add some friends!"
+        TextView noFriendsText = (TextView) findViewById(R.id.noFriendsText);
+        if(friendsList.isEmpty()) {
+            noFriendsText.setText(R.string.add_some_friends);
+        }else{
+            noFriendsText.setText("");
         }
 
         // Sort friends list by display name
@@ -158,10 +171,13 @@ public class MainActivity extends AppCompatActivity {
 
     //Called when poke is pressed with test UUID
     public void removeFriend(Friend friend) {
-        RequestManager.addRemoveFriendRequest(fileManager.getUUID(), friend.getUUID(), response -> {
-            Log.d("Remove", "response:" + response);
-            updateFriends();
-        });
+        //attempts to remove friend from list. if successful, sends network request to remove
+        if(Friend.friendsList.removeByKey(friend.getUUID())){
+            RequestManager.addRemoveFriendRequest(fileManager.getUUID(), friend.getUUID(), response -> {
+                Log.d("Remove", "response:" + response);
+                updateFriends();
+            });
+        }
     }
 
     //pop up dialog that shows when user holds down on a friend in the list
@@ -198,6 +214,32 @@ public class MainActivity extends AppCompatActivity {
         builder.setNegativeButton("Cancel", (dialog, id) -> dialog.dismiss());
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    //pop up dialog that shows when user clicks on friend in list
+    private void showReceivedPoke(Friend friend){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        Poke currentPoke = friend.getMostRecentPoke();
+        View pokeView = null;
+
+        pokeView = pokeAdapter.getView(currentPoke.getPokeType().getId(), pokeView, null );
+        builder.setView(pokeView);
+
+        builder.setCancelable(false);
+        builder.setTitle("Poke From " + friend.getName() + "!");
+        builder.setNegativeButton("Exit", (dialog, id) -> dialog.dismiss());
+
+        if(friend.hasPokes()) {
+            builder.setPositiveButton("Next", (dialog, id) -> {
+                dialog.dismiss();
+                showReceivedPoke(friend);
+            });
+        }
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        friendAdapter.notifyDataSetChanged();
     }
 
     //starts add friend activity

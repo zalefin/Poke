@@ -120,6 +120,12 @@ public class MainActivity extends AppCompatActivity {
 
             Log.d("POKE", "response:" + response);
             Toast.makeText(this, "Poked with " + id, Toast.LENGTH_SHORT).show();
+        }, error -> {
+            if(error.networkResponse==null){
+                Toast.makeText(this, "Check your connection.", Toast.LENGTH_SHORT).show();
+            }else if(error.networkResponse.statusCode == 400){
+                Toast.makeText(this, "Invalid User", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -142,6 +148,12 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             updateFriendsArray(updFriends);
+        }, error -> {
+            if(error.networkResponse==null){
+                Toast.makeText(this, "Check your connection.", Toast.LENGTH_SHORT).show();
+            }else if(error.networkResponse.statusCode == 400){
+                Toast.makeText(this, "Invalid User", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -176,7 +188,13 @@ public class MainActivity extends AppCompatActivity {
             RequestManager.addRemoveFriendRequest(fileManager.getUUID(), friend.getUUID(), response -> {
                 Log.d("Remove", "response:" + response);
                 updateFriends();
-            });
+            }, error -> {
+                        if (error.networkResponse == null) {
+                            Toast.makeText(this, "Check your connection.", Toast.LENGTH_SHORT).show();
+                        } else if (error.networkResponse.statusCode == 400) {
+                            Toast.makeText(this, "Invalid User", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
     }
 

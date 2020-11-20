@@ -75,6 +75,12 @@ public class ScanActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show();
             }
+        }, error -> {
+            if (error.networkResponse == null) {
+                Toast.makeText(this, "Check your connection.", Toast.LENGTH_SHORT).show();
+            } else if (error.networkResponse.statusCode == 400) {
+                Toast.makeText(this, "Invalid User", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 

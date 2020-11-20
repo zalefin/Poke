@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
@@ -13,11 +14,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class PollTask implements Runnable{
-    public static final int INTERVAL = 15000; // time in milliseconds between each activation
+    public static final int INTERVAL = 10000; // time in milliseconds between each activation
 
     private Handler handler;
     private NotiMan notiMan;
     private FileMan fileMan;
+    private Context context;
 
     // TODO change min build version so we don't need these
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -25,6 +27,7 @@ public class PollTask implements Runnable{
         this.handler = handler;
         this.notiMan = new NotiMan(context);
         this.fileMan = new FileMan(context);
+        this.context = context;
     }
 
     @Override
@@ -52,6 +55,12 @@ public class PollTask implements Runnable{
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+        }, error -> {
+            if(error.networkResponse==null){
+                Toast.makeText(context, "Check your connection.", Toast.LENGTH_SHORT).show();
+            }else if(error.networkResponse.statusCode == 400){
+                Toast.makeText(context, "Invalid User", Toast.LENGTH_SHORT).show();
             }
         });
 

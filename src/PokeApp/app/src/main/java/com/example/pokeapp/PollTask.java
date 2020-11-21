@@ -63,7 +63,7 @@ public class PollTask implements Runnable{
                     //adds received poke to receivedPokes queue in each friend
                     Friend.friendsList.get(senderUUID).addReceivedPoke(new Poke(poke.getString(0), uuid, PokeType.fromId(payload)));
                 }
-                root.friendAdapter.notifyDataSetChanged();
+                root.friendAdapter.notifyDataSetChanged();//update list view
             } catch (Exception e) {
                 e.printStackTrace();
             }

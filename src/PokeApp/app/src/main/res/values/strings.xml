@@ -4,4 +4,5 @@
     <string name="channel_name">default_channel</string>
     <string name="channel_description">Default Notification Channel</string>
     <string name="add_some_friends">Add some friends!</string>
+    <string name="poked">You\'ve been Poked!</string>
 </resources>

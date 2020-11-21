@@ -14,6 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,15 +26,19 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FriendAdapter friendAdapter;
+    public FriendAdapter friendAdapter;
     private PokeAdapter pokeAdapter;
     private FileMan fileManager;
+    public boolean visible;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         fileManager = new FileMan(this);
 
         //added stuff for networking. Needed in ANY activity that makes requests.
@@ -56,6 +63,13 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         //tries to update friends array
         updateFriends();
+        visible = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        visible = false;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -119,12 +133,12 @@ public class MainActivity extends AppCompatActivity {
                 id, response -> {
 
             Log.d("POKE", "response:" + response);
-            Toast.makeText(this, "Poked with " + id, Toast.LENGTH_SHORT).show();
+            Snackbar.make(findViewById(R.id.main_layout), "Poked " + Friend.friendsList.get(poke.getTargetUUID()).getName(), Snackbar.LENGTH_LONG).show();
         }, error -> {
             if(error.networkResponse==null){
-                Toast.makeText(this, "Check your connection.", Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.main_layout), "Check your connection.", Snackbar.LENGTH_LONG).show();
             }else if(error.networkResponse.statusCode == 400){
-                Toast.makeText(this, "Invalid User", Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.main_layout), "Invalid user, this user may have unfriended you.", Snackbar.LENGTH_LONG).show();
             }
         });
     }
@@ -150,9 +164,9 @@ public class MainActivity extends AppCompatActivity {
             updateFriendsArray(updFriends);
         }, error -> {
             if(error.networkResponse==null){
-                Toast.makeText(this, "Check your connection.", Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.main_layout), "Check your connection.", Snackbar.LENGTH_LONG).show();
             }else if(error.networkResponse.statusCode == 400){
-                Toast.makeText(this, "Invalid User", Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.main_layout), "Invalid user.", Snackbar.LENGTH_LONG).show();
             }
         });
     }
@@ -189,12 +203,12 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Remove", "response:" + response);
                 updateFriends();
             }, error -> {
-                        if (error.networkResponse == null) {
-                            Toast.makeText(this, "Check your connection.", Toast.LENGTH_SHORT).show();
-                        } else if (error.networkResponse.statusCode == 400) {
-                            Toast.makeText(this, "Invalid User", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                if(error.networkResponse==null){
+                    Snackbar.make(findViewById(R.id.main_layout), "Check your connection.", Snackbar.LENGTH_LONG).show();
+                }else if(error.networkResponse.statusCode == 400){
+                    Snackbar.make(findViewById(R.id.main_layout), "Invalid user.", Snackbar.LENGTH_LONG).show();
+                }
+            });
         }
     }
 

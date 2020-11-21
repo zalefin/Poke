@@ -4,7 +4,7 @@ import android.os.Handler;
 import android.util.Log;
 
 public class UpdateTask implements Runnable{
-    public static final int INTERVAL = 10000; // time in milliseconds between each activation
+    public static final int INTERVAL = 15000; // time in milliseconds between each activation
 
     private Handler handler;
     private MainActivity root;

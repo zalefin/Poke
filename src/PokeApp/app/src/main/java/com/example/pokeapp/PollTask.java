@@ -4,9 +4,12 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,14 +23,16 @@ public class PollTask implements Runnable{
     private NotiMan notiMan;
     private FileMan fileMan;
     private Context context;
+    private MainActivity root;
 
     // TODO change min build version so we don't need these
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public PollTask(Handler handler, Context context) {
+    public PollTask(Handler handler, MainActivity root) {
         this.handler = handler;
+        this.context = root.getApplicationContext();
         this.notiMan = new NotiMan(context);
         this.fileMan = new FileMan(context);
-        this.context = context;
+        this.root = root;
     }
 
     @Override
@@ -49,10 +54,16 @@ public class PollTask implements Runnable{
                     String name = Friend.friendsList.get(senderUUID).getName();
                     String payload = poke.getString(1);
                     String message = PokeType.fromId(payload).getContent();
-                    notiMan.createNotification(name + " Poked You! \n" + message);
+                    if(!root.visible) {
+                        notiMan.createNotification(name + " Poked You! \n" + message);
+                    }else{
+                        View mainLayout = root.findViewById(R.id.userText);
+                        Snackbar.make(mainLayout, R.string.poked, Snackbar.LENGTH_LONG).show();
+                    }
                     //adds received poke to receivedPokes queue in each friend
                     Friend.friendsList.get(senderUUID).addReceivedPoke(new Poke(poke.getString(0), uuid, PokeType.fromId(payload)));
                 }
+                root.friendAdapter.notifyDataSetChanged();
             } catch (Exception e) {
                 e.printStackTrace();
             }

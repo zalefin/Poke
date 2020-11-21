@@ -57,7 +57,7 @@ public class PollTask implements Runnable{
                     if(!root.visible) {
                         notiMan.createNotification(name + " Poked You! \n" + message);
                     }else{
-                        View mainLayout = root.findViewById(R.id.userText);
+                        View mainLayout = root.findViewById(R.id.main_layout);
                         Snackbar.make(mainLayout, R.string.poked, Snackbar.LENGTH_LONG).show();
                     }
                     //adds received poke to receivedPokes queue in each friend

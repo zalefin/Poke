@@ -81,5 +81,3 @@ public class FriendAdapter extends BaseAdapter implements ListAdapter {
     }
 
 }
-
-//60e49a29-e1d3-4d9c-bc7b-dcf1f1cd90bf

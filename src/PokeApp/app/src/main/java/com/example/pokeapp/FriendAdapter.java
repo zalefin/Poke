@@ -73,6 +73,8 @@ public class FriendAdapter extends BaseAdapter implements ListAdapter {
         friendName.setText(friend.getName());
         //friendUUID.setText(friend.getUUID());
 
+
+        //this adds a colorful icon next to each friend based on their uuid
         int index = Character.digit(friend.getUUID().charAt(0), 16);
         FloatingActionButton circle = (FloatingActionButton)view.findViewById(R.id.circle);
         circle.setBackgroundTintList(AppCompatResources.getColorStateList(context, color[index]));

@@ -277,6 +277,22 @@ public class MainActivity extends AppCompatActivity {
         friendAdapter.notifyDataSetChanged();
     }
 
+    //pop up dialog that shows app help info
+    private void showHelpDialog(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog);
+        builder.setCancelable(false);
+        builder.setTitle("Help");
+        builder.setMessage("\nClick on add friend to scan a friend's QR code or display your own.\n " +
+                "\nClick on a friend to send them a poke!\n " +
+                "\nIf you have received a poke from a friend, click on them to view.\n " +
+                "\nPress and hold on a friend if you wish to remove them.");
+        builder.setNegativeButton("Exit", (dialog, id) -> dialog.dismiss());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 
     //creates options menu
     @Override
@@ -294,6 +310,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.add_friend:
                 Intent i = new Intent(this, AddFriendActivity.class);
                 startActivity(i);
+                return true;
+            case R.id.help:
+                showHelpDialog();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

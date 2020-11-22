@@ -5,13 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:id="@+id/help"
+        android:orderInCategory="200"
         android:title="Help"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/add_friend"
-        android:orderInCategory="200"
+        android:orderInCategory="100"
         android:title="Add Friend"
         app:showAsAction="ifRoom"/>
 </menu>

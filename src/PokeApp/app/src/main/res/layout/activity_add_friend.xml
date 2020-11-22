@@ -7,20 +7,6 @@
     tools:context=".AddFriendActivity"
     android:id="@+id/add_friend_layout">
 
-    <Button
-        android:id="@+id/leaveQR"
-        android:layout_width="43dp"
-        android:layout_height="39dp"
-        android:text="X"
-        android:onClick="leaveQR"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.802"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.119" />
-
-
     <ImageView
         android:id="@+id/qrView"
         android:layout_width="300dp"
@@ -60,11 +46,11 @@
         android:onClick="scanQR"
         android:text="Scan QR"
         app:layout_constraintBottom_toTopOf="@+id/qrView"
-        app:layout_constraintEnd_toStartOf="@+id/leaveQR"
-        app:layout_constraintHorizontal_bias="0.269"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.863" />
+        app:layout_constraintVertical_bias="0.572" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

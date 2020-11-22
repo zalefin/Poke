@@ -7,6 +7,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -23,9 +26,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Toolbar toolbar;
     public FriendAdapter friendAdapter;
     private PokeAdapter pokeAdapter;
     private FileMan fileManager;
@@ -36,12 +41,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         fileManager = new FileMan(this);
 
-        //added stuff for networking. Needed in ANY activity that makes requests.
+        //sets up toolbar
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(fileManager.getName());
+
+        //initializes request manager for networking
         RequestManager.init(this);
 
         //checks if user data exists, prompt registration if not
@@ -84,9 +92,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initFriendList(){
-        //sets uuid text to user uuid
-        TextView userUUID = (TextView)findViewById(R.id.userText);
-        userUUID.setText(fileManager.getName());
         //set up friend list view with friendAdapter and click listeners
         Friend.friendsList = new MappedList<>((friend) -> friend.getUUID());
         friendAdapter = new FriendAdapter(Friend.friendsList, this);
@@ -214,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
 
     //pop up dialog that shows when user holds down on a friend in the list
     private void showDeleteFriendDialog(Friend friend){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog);
         builder.setTitle("Confirm");
         builder.setMessage("Do you want to delete this friend?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -234,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
 
     //pop up dialog that shows when user clicks on friend in list
     private void showPokeOptions(Friend friend){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog);
         builder.setAdapter(pokeAdapter, (dialog, pos) -> {
             Poke outPoke = new Poke(this.fileManager.getUUID(), friend.getUUID(), PokeType.fromId(pokeAdapter.getItem(pos).getId()));
             poke(outPoke);
@@ -251,11 +256,9 @@ public class MainActivity extends AppCompatActivity {
     //pop up dialog that shows when user clicks on friend in list
     private void showReceivedPoke(Friend friend){
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog);
         Poke currentPoke = friend.getMostRecentPoke();
-        View pokeView = null;
-
-        pokeView = pokeAdapter.getView(currentPoke.getPokeType().getId(), pokeView, null );
+        View pokeView = pokeAdapter.getView(currentPoke.getPokeType().getId(), null, null );
         builder.setView(pokeView);
 
         builder.setCancelable(false);
@@ -274,9 +277,26 @@ public class MainActivity extends AppCompatActivity {
         friendAdapter.notifyDataSetChanged();
     }
 
-    //starts add friend activity
-    public void addFriend(View v) {
-        Intent intent = new Intent(this, AddFriendActivity.class);
-        startActivity(intent);
+
+    //creates options menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    //handles selected toolbar options
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.add_friend:
+                Intent i = new Intent(this, AddFriendActivity.class);
+                startActivity(i);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

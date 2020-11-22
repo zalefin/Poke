@@ -37,11 +37,11 @@ public class RegisterActivity extends AppCompatActivity {
             returnToMain();
         }, error -> {
             if(error.networkResponse==null){
-                new android.app.AlertDialog.Builder(this).setTitle("Check Your Connection")
+                new android.app.AlertDialog.Builder(this, R.style.CustomAlertDialog).setTitle("Check Your Connection")
                         .setMessage("Could not connect to server.")
                         .setPositiveButton("OK", (dialog, id) -> dialog.dismiss()).show();
             }else if(error.networkResponse.statusCode == 400){
-                new android.app.AlertDialog.Builder(this).setTitle("Name Too Long!")
+                new android.app.AlertDialog.Builder(this, R.style.CustomAlertDialog).setTitle("Name Too Long!")
                         .setMessage("Name must be 32 characters or less.")
                         .setPositiveButton("OK", (dialog, id) -> dialog.dismiss()).show();
             }

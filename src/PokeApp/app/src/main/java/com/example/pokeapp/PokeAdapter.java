@@ -49,7 +49,7 @@ public class PokeAdapter extends BaseAdapter implements ListAdapter {
         pokeMessage.setText(PokeType.fromId(position).getContent());
         */
 
-        ImageView pokeImage = (ImageView)view.findViewById(R.id.poke_image);
+        ImageView pokeImage = view.findViewById(R.id.poke_image);
         Drawable image = ContextCompat.getDrawable(context, PokeType.fromId(position).getImageSrc());
         pokeImage.setImageDrawable(image);
         return view;

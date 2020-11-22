@@ -7,6 +7,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -14,27 +17,39 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FriendAdapter friendAdapter;
+    private Toolbar toolbar;
+    public FriendAdapter friendAdapter;
     private PokeAdapter pokeAdapter;
     private FileMan fileManager;
+    public boolean visible;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         fileManager = new FileMan(this);
 
-        //added stuff for networking. Needed in ANY activity that makes requests.
+        //sets up toolbar
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(fileManager.getName());
+
+        //initializes request manager for networking
         RequestManager.init(this);
 
         //checks if user data exists, prompt registration if not
@@ -56,6 +71,13 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         //tries to update friends array
         updateFriends();
+        visible = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        visible = false;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -70,9 +92,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initFriendList(){
-        //sets uuid text to user uuid
-        TextView userUUID = (TextView)findViewById(R.id.userText);
-        userUUID.setText(fileManager.getName());
         //set up friend list view with friendAdapter and click listeners
         Friend.friendsList = new MappedList<>((friend) -> friend.getUUID());
         friendAdapter = new FriendAdapter(Friend.friendsList, this);
@@ -119,12 +138,12 @@ public class MainActivity extends AppCompatActivity {
                 id, response -> {
 
             Log.d("POKE", "response:" + response);
-            Toast.makeText(this, "Poked with " + id, Toast.LENGTH_SHORT).show();
+            Snackbar.make(findViewById(R.id.main_layout), "Poked " + Friend.friendsList.get(poke.getTargetUUID()).getName(), Snackbar.LENGTH_LONG).show();
         }, error -> {
             if(error.networkResponse==null){
-                Toast.makeText(this, "Check your connection.", Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.main_layout), "Check your connection.", Snackbar.LENGTH_LONG).show();
             }else if(error.networkResponse.statusCode == 400){
-                Toast.makeText(this, "Invalid User", Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.main_layout), "Invalid user, this user may have unfriended you.", Snackbar.LENGTH_LONG).show();
             }
         });
     }
@@ -150,9 +169,9 @@ public class MainActivity extends AppCompatActivity {
             updateFriendsArray(updFriends);
         }, error -> {
             if(error.networkResponse==null){
-                Toast.makeText(this, "Check your connection.", Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.main_layout), "Check your connection.", Snackbar.LENGTH_LONG).show();
             }else if(error.networkResponse.statusCode == 400){
-                Toast.makeText(this, "Invalid User", Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.main_layout), "Invalid user.", Snackbar.LENGTH_LONG).show();
             }
         });
     }
@@ -189,18 +208,18 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Remove", "response:" + response);
                 updateFriends();
             }, error -> {
-                        if (error.networkResponse == null) {
-                            Toast.makeText(this, "Check your connection.", Toast.LENGTH_SHORT).show();
-                        } else if (error.networkResponse.statusCode == 400) {
-                            Toast.makeText(this, "Invalid User", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                if(error.networkResponse==null){
+                    Snackbar.make(findViewById(R.id.main_layout), "Check your connection.", Snackbar.LENGTH_LONG).show();
+                }else if(error.networkResponse.statusCode == 400){
+                    Snackbar.make(findViewById(R.id.main_layout), "Invalid user.", Snackbar.LENGTH_LONG).show();
+                }
+            });
         }
     }
 
     //pop up dialog that shows when user holds down on a friend in the list
     private void showDeleteFriendDialog(Friend friend){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog);
         builder.setTitle("Confirm");
         builder.setMessage("Do you want to delete this friend?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -220,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
 
     //pop up dialog that shows when user clicks on friend in list
     private void showPokeOptions(Friend friend){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog);
         builder.setAdapter(pokeAdapter, (dialog, pos) -> {
             Poke outPoke = new Poke(this.fileManager.getUUID(), friend.getUUID(), PokeType.fromId(pokeAdapter.getItem(pos).getId()));
             poke(outPoke);
@@ -237,11 +256,9 @@ public class MainActivity extends AppCompatActivity {
     //pop up dialog that shows when user clicks on friend in list
     private void showReceivedPoke(Friend friend){
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog);
         Poke currentPoke = friend.getMostRecentPoke();
-        View pokeView = null;
-
-        pokeView = pokeAdapter.getView(currentPoke.getPokeType().getId(), pokeView, null );
+        View pokeView = pokeAdapter.getView(currentPoke.getPokeType().getId(), null, null );
         builder.setView(pokeView);
 
         builder.setCancelable(false);
@@ -260,9 +277,45 @@ public class MainActivity extends AppCompatActivity {
         friendAdapter.notifyDataSetChanged();
     }
 
-    //starts add friend activity
-    public void addFriend(View v) {
-        Intent intent = new Intent(this, AddFriendActivity.class);
-        startActivity(intent);
+    //pop up dialog that shows app help info
+    private void showHelpDialog(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog);
+        builder.setCancelable(false);
+        builder.setTitle("Help");
+        builder.setMessage("\nClick on add friend to scan a friend's QR code or display your own.\n " +
+                "\nClick on a friend to send them a poke!\n " +
+                "\nIf you have received a poke from a friend, click on them to view.\n " +
+                "\nPress and hold on a friend if you wish to remove them.");
+        builder.setNegativeButton("Exit", (dialog, id) -> dialog.dismiss());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+
+    //creates options menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    //handles selected toolbar options
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.add_friend:
+                Intent i = new Intent(this, AddFriendActivity.class);
+                startActivity(i);
+                return true;
+            case R.id.help:
+                showHelpDialog();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

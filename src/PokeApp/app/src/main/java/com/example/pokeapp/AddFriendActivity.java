@@ -16,10 +16,13 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.io.ByteArrayOutputStream;
@@ -35,6 +38,8 @@ import java.util.Random;
 public class AddFriendActivity extends AppCompatActivity{
 
     private FileMan fileManager;
+    //qr code scanner object
+    IntentIntegrator qrScan;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -65,6 +70,7 @@ public class AddFriendActivity extends AppCompatActivity{
             loadedBmp = changeColor(loadedBmp);
             qrView.setImageBitmap(loadedBmp);
         }
+
     }
 
 
@@ -143,8 +149,37 @@ public class AddFriendActivity extends AppCompatActivity{
         this.finish();
     }
 
+    //initiates scan if scanqr button is pressed
     public void scanQR(View v){
-        Intent intent = new Intent(this, ScanActivity.class);
-        startActivity(intent);
+        qrScan = new IntentIntegrator(this);
+        qrScan.initiateScan();
     }
+
+    //gets result after qr scanning intent finishes
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (scanResult.getContents() != null && resultCode == RESULT_OK) {
+            //logs scanned UUID and sends request for add friend
+            Log.i("tag", scanResult.getContents());
+            addFriendFromUUID(scanResult.getContents());
+        }else{
+            Snackbar.make(findViewById(R.id.add_friend_layout), "QR code could not be scanned.", Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    //sends network request with scanned UUID
+    public void addFriendFromUUID(String UUID) {
+        RequestManager.addAddFriendRequest(fileManager.getUUID(), UUID, response -> {
+            Snackbar.make(findViewById(R.id.add_friend_layout), "Successfully added friend!", Snackbar.LENGTH_LONG).show();
+        }, error -> {
+            if (error.networkResponse == null) {
+                Snackbar.make(findViewById(R.id.add_friend_layout), "Check your connection.", Snackbar.LENGTH_LONG).show();
+            } else if (error.networkResponse.statusCode == 400) {
+                Snackbar.make(findViewById(R.id.add_friend_layout), "You may have already added this friend!", Snackbar.LENGTH_LONG).show();
+            }
+        });
+    }
+
 }

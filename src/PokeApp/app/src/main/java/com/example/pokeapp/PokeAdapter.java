@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ScaleDrawable;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,7 @@ public class PokeAdapter extends BaseAdapter implements ListAdapter {
         Typeface typeface = ResourcesCompat.getFont(context, type.getFont());
         pokeMessage.setTypeface(typeface);
         pokeMessage.setTextColor(ContextCompat.getColor(context, type.getColor()));
+        pokeMessage.setTextSize(TypedValue.COMPLEX_UNIT_DIP, type.getFontSize());
 
         //this is poke image
         ImageView pokeImage = view.findViewById(R.id.poke_image);

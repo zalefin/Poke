@@ -53,11 +53,11 @@ public class PokeAdapter extends BaseAdapter implements ListAdapter {
         //this is the poke text
         TextView pokeMessage = (TextView)view.findViewById(R.id.poke_text);
         pokeMessage.setText(type.getContent());
-        /*
         Typeface typeface = ResourcesCompat.getFont(context, type.getFont());
-        pokeMessage.setTypeface(typeface);*/
+        pokeMessage.setTypeface(typeface);
+        pokeMessage.setTextColor(ContextCompat.getColor(context, type.getColor()));
 
-
+        //this is poke image
         ImageView pokeImage = view.findViewById(R.id.poke_image);
         Drawable image = ContextCompat.getDrawable(context, type.getImageSrc());
         pokeImage.setImageDrawable(image);

@@ -155,10 +155,6 @@ public class AddFriendActivity extends AppCompatActivity{
         return outBmp;
     }
 
-    public void leaveQR(View v){
-        this.finish();
-    }
-
     //initiates scan if scanqr button is pressed
     public void scanQR(View v){
         qrScan = new IntentIntegrator(this);

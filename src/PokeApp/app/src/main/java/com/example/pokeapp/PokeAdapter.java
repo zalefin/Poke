@@ -1,7 +1,11 @@
 package com.example.pokeapp;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ScaleDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +15,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 
 public class PokeAdapter extends BaseAdapter implements ListAdapter {
@@ -43,14 +48,18 @@ public class PokeAdapter extends BaseAdapter implements ListAdapter {
             view = inflater.inflate(R.layout.poke_list_layout, null);
         }
 
-        //this is being replaced with image
+        PokeType type = PokeType.fromId(position);
+
+        //this is the poke text
+        TextView pokeMessage = (TextView)view.findViewById(R.id.poke_text);
+        pokeMessage.setText(type.getContent());
         /*
-        TextView pokeMessage = (TextView)view.findViewById(R.id.poke_message_text);
-        pokeMessage.setText(PokeType.fromId(position).getContent());
-        */
+        Typeface typeface = ResourcesCompat.getFont(context, type.getFont());
+        pokeMessage.setTypeface(typeface);*/
+
 
         ImageView pokeImage = view.findViewById(R.id.poke_image);
-        Drawable image = ContextCompat.getDrawable(context, PokeType.fromId(position).getImageSrc());
+        Drawable image = ContextCompat.getDrawable(context, type.getImageSrc());
         pokeImage.setImageDrawable(image);
         return view;
     }

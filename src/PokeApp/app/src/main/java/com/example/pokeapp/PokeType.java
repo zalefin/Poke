@@ -2,19 +2,22 @@ package com.example.pokeapp;
 
 public enum PokeType {
     // TODO add image src to enum constructor?
-    POKETYPE_POKE (0, "Poke!", R.drawable.poke_test_image),
-    POKETYPE_HEY (1, "Hey!", R.drawable.hey_test_image),
-    POKETYPE_WHATS_UP (2, "What's up!", R.drawable.whats_test_image),
-    POKETYPE_CALL_ME (3, "Call me!", R.drawable.call_test_image);
+    POKETYPE_POKE (0, "Poke!", R.drawable.hey_image, 1),
+    POKETYPE_HEY (1, "Hey!", R.drawable.hey_image, 1),
+    POKETYPE_WHATS_UP (2, "What's up!", R.drawable.hey_image, 1),
+    POKETYPE_CALL_ME (3, "Call me!", R.drawable.hey_image, 1);
 
     private final int id;
     private final String content;
     private final int img;
+    private final int font;
 
-    PokeType(int id, String content, int img) {
+
+    PokeType(int id, String content, int img, int font) {
         this.id = id;
         this.content = content;
         this.img = img;
+        this.font = font;
     }
 
     public int getId() {
@@ -27,6 +30,10 @@ public enum PokeType {
 
     public int getImageSrc() {
         return img;
+    }
+
+    public int getFont() {
+        return font;
     }
 
     public static PokeType fromId(int id) { return PokeType.values()[id]; }

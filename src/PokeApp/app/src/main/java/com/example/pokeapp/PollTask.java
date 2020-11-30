@@ -67,14 +67,7 @@ public class PollTask implements Runnable{
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }, error -> {
-            if(error.networkResponse==null){
-                Toast.makeText(context, "Check your connection.", Toast.LENGTH_SHORT).show();
-            }else if(error.networkResponse.statusCode == 400){
-                Toast.makeText(context, "Invalid User", Toast.LENGTH_SHORT).show();
-            }
         });
-
         handler.postDelayed(this, INTERVAL); // delay handler
     }
 }

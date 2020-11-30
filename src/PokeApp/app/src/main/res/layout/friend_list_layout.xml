@@ -16,7 +16,9 @@
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
         android:textColor="@color/Black"
-        android:textSize="22sp" />
+        android:textStyle="bold"
+        android:textSize="22sp"
+        />
 
     <TextView
         android:id="@+id/friend_uuid_text"

@@ -186,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("Friends", "Adding " + f.getName() + " to friends list.");
             }
         }
+
         //if user has no friends, display "Add some friends!"
         TextView noFriendsText = (TextView) findViewById(R.id.noFriendsText);
         if(friendsList.isEmpty()) {

@@ -5,13 +5,19 @@
 
     <ImageView
         android:id="@+id/poke_image"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:foreground="@drawable/pokeborder"
+        android:layout_marginBottom="30dp"
+        />
+
+    <TextView
+        android:id="@+id/poke_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingRight="20dp"
-        android:paddingLeft="20dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:layout_centerVertical="true"
+        android:layout_alignBottom="@id/poke_image"
         android:layout_centerHorizontal="true"
         />
 

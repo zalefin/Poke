@@ -1,5 +1,6 @@
 package com.example.pokeapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,6 +9,9 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.zxing.BarcodeFormat;
@@ -32,6 +37,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.Random;
 
 
@@ -47,6 +53,10 @@ public class AddFriendActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_friend);
         fileManager = new FileMan(this);
+        //sets up toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(fileManager.getName());
 
         //finds image view and sets image to generated bitmap
         ImageView qrView = (ImageView) findViewById(R.id.qrView);
@@ -145,10 +155,6 @@ public class AddFriendActivity extends AppCompatActivity{
         return outBmp;
     }
 
-    public void leaveQR(View v){
-        this.finish();
-    }
-
     //initiates scan if scanqr button is pressed
     public void scanQR(View v){
         qrScan = new IntentIntegrator(this);
@@ -180,6 +186,46 @@ public class AddFriendActivity extends AppCompatActivity{
                 Snackbar.make(findViewById(R.id.add_friend_layout), "You may have already added this friend!", Snackbar.LENGTH_LONG).show();
             }
         });
+    }
+
+    //creates options menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.add_friend_menu, menu);
+        return true;
+    }
+
+    //handles selected toolbar options
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.back:
+                this.finish();
+                return true;
+            case R.id.help:
+                showHelpDialog();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    //pop up dialog that shows app help info
+    private void showHelpDialog(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog);
+        builder.setCancelable(false);
+        builder.setTitle("Help");
+        builder.setMessage("\nClick on add friend to scan a friend's QR code or display your own.\n " +
+                "\nClick on a friend to send them a poke!\n " +
+                "\nIf you have received a poke from a friend, click on them to view.\n " +
+                "\nPress and hold on a friend if you wish to remove them.");
+        builder.setNegativeButton("Exit", (dialog, id) -> dialog.dismiss());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 }

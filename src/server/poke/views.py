@@ -71,7 +71,7 @@ def do_poke_inbound(request):
 def register(request):
     name = request.POST['name']
 
-    if len(name) > 32:
+    if len(name) > 32 or len(name):
         return HttpResponse('name invalid', status=400)
 
     uuid = str(uuid4()) # generate uuid for registration

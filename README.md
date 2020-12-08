@@ -35,6 +35,9 @@ package installed,
 
 can be used to run the development server.
 
+# Building/Running
+The source can be built, run, and tested from Android Studio.
+
 # Directory Structure
 ```
 .

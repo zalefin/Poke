@@ -52,7 +52,3 @@ The source can be built, run, and tested from Android Studio.
 
 532 directories, 1229 files
 ```
-
-# An Additional Note
-Due to the way that our school handled the repos for our Software Development project, I am unable to publicly show the original one on my page. 
-This is a cloned version of the original, with the only edits being to remove our server's URL from the project.
